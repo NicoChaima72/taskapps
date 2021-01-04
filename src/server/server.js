@@ -6,6 +6,10 @@ const routes = require("../routes/routes.js");
 require("../config/config");
 
 module.exports = (app) => {
+	// database
+	require("../database/database");
+
+	// settings
 	app.set("port", process.env.PORT);
 	app.set("view engine", "pug");
 	app.set("views", path.join(__dirname, "../views"));
