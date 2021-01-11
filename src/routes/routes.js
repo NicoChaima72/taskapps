@@ -7,7 +7,7 @@ module.exports = (app) => {
 	Auth(router);
 
 	router.get("/", (req, res) => {
-		res.render("index", { pageName: "index" });
+		res.render("emails/auth/resetPassword", { pageName: "index" });
 	});
 
 	app.use(router);

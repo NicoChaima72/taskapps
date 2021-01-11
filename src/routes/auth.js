@@ -1,4 +1,5 @@
 const { auth } = require("../controllers");
+const { AuthRequest } = require("../requests");
 
 module.exports = (router) => {
 	router.get("/login", auth.showLoginForm);
@@ -15,11 +16,11 @@ module.exports = (router) => {
 
 	router.get("/password/reset", auth.showLinkRequestForm);
 
-	router.post("/password/email", auth.sendResetLinkEmail);
+	router.put("/password/reset", auth.sendResetLinkEmail);
 
 	router.get("/password/reset/:token", auth.showResetForm);
 
-	router.patch("/password/reset/:token", auth.reset);
+	router.patch("/password/reset/:token", AuthRequest.resetPassword, auth.reset);
 
 	return router;
 };

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+html(lang="es")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        style.
+            @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+            body {
+                font-family: 'Inter', sans-serif;
+                color: #27272A;
+            }
+            a {
+                text-decoration: none;
+                font-weight: 600;
+                color: #27272A;
+            }
+            .container {
+                text-align: center;
+                background-color: #F9FAFB;
+                padding: 2rem 1.5rem .5rem 1.5rem;
+                border-radius: 1rem;
+            }
+            h2 {
+                font-size: 1.7rem;
+            }
+            .btn {
+                background-color: #16A34A;
+                color: white;
+                padding: .6rem 4rem;
+                display: inline-block;
+                border-radius: .5rem;
+            }
+            .footer {
+                font-size: .7rem;
+                margin-top: 3rem;
+            }
+
+            p a {
+                display: block;
+                word-wrap: break-word;
+            }
+
+    body
+        .container
+            h2 Confirmar tu cuenta
+            p.description Sigue el siguiente link para activar tu cuenta!
+            a(href=`${confirmUrl}`).btn Activar
+            p.footer Si no funciona el link, copia esta url:  
+                a(href="") #{confirmUrl}

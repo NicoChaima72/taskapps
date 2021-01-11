@@ -1,16 +1,31 @@
 const nodemailer = require("nodemailer");
+const pug = require("pug");
+const juice = require("juice");
+const { htmlToText } = require("html-to-text");
 
 const emailConfig = require("../config/email");
+
+const generateHTML = (options) => {
+	const html = pug.renderFile(
+		`${__dirname}/../views/emails/${options.archive}.pug`,
+		options
+	);
+
+	return juice(html);
+};
 
 const transporter = nodemailer.createTransport(emailConfig);
 
 exports.sendEmail = async (options) => {
+	const html = generateHTML(options);
+	const htmlString = htmlToText(html);
+
 	const mailOptions = {
 		from: '"TaskApps" <noreply@taskapps.com>',
 		to: options.user.email,
-		subject: options.subject,
-		text: options.message,
-		html: `<p>${options.message}</p>`,
+		subject: `Taskapps - ${options.subject}`,
+		text: htmlString,
+		html,
 	};
 
 	return new Promise((resolve, reject) => {

@@ -3,11 +3,12 @@ const uniqid = require("uniqid");
 const helpers = require("../helpers/back");
 const emailService = require("../services/email");
 const { uniq, uniqueId } = require("underscore");
+const { Op } = require("sequelize");
 
 const controller = {};
 
 controller.showLoginForm = (req, res) => {
-	res.json({ ok: true });
+	res.json({ ok: "Show login form" });
 };
 
 controller.login = (req, res) => {
@@ -15,7 +16,7 @@ controller.login = (req, res) => {
 };
 
 controller.showRegistrationForm = (req, res) => {
-	res.json({ ok: true });
+	res.json({ ok: "Show registration form" });
 };
 
 controller.register = async (req, res) => {
@@ -27,24 +28,27 @@ controller.register = async (req, res) => {
 			name,
 			email,
 			password,
-			token: `${uniqid()}${uniqid()}`,
+			token: uniqid(),
 		});
 	} catch (err) {
 		return res.json(helpers.handleErrorSequelize(err));
 	}
 
 	const confirmUrl = `http://localhost:3000/register/activate/${user.token}`;
-	try {
-		const info = await emailService.sendEmail({
+
+	emailService
+		.sendEmail({
 			user,
 			subject: `Confirma tu cuenta`,
-			message: `Visita: ${confirmUrl}`,
+			archive: "auth/confirmAccount",
+			confirmUrl,
+		})
+		.then((info) => res.json({ ok: true, info, confirmUrl }))
+		.catch(async (err) => {
+			await user.destroy();
+			console.log(err);
+			return res.json({ ok: false, err });
 		});
-		res.json({ ok: true, info, confirmUrl });
-	} catch (err) {
-		await user.destroy();
-		return res.json({ ok: false, err });
-	}
 };
 
 controller.activate = async (req, res) => {
@@ -64,19 +68,72 @@ controller.logout = (req, res) => {
 };
 
 controller.showLinkRequestForm = (req, res) => {
-	res.json({ ok: true });
+	res.json({ ok: "Show form link request" });
 };
 
-controller.sendResetLinkEmail = (req, res) => {
-	res.json({ ok: true });
+controller.sendResetLinkEmail = async (req, res) => {
+	const { email } = req.body;
+
+	if (!email)
+		return res.status(400).json({ ok: false, message: "Email is required" });
+
+	const user = await User.findOne({ where: { email: email } });
+
+	if (!user)
+		return res.status(400).json({ ok: false, message: "Email not exist" });
+
+	user.token = uniqid();
+	user.expire = Date.now() + 1000 * 60 * 60 * 2; /** 2hrs */
+
+	await user.save();
+
+	const confirmUrl = `http://localhost:3000/password/reset/${user.token}`;
+
+	emailService
+		.sendEmail({
+			user,
+			subject: `Olvidé mi contraseña`,
+			archive: "auth/resetPassword",
+			confirmUrl,
+		})
+		.then((info) => res.json({ ok: true, info, confirmUrl }))
+		.catch(async (err) => {
+			console.log(err);
+			return res.json({ ok: false, err });
+		});
 };
 
-controller.showResetForm = (req, res) => {
-	res.json({ ok: true });
+controller.showResetForm = async (req, res) => {
+	const { token } = req.params;
+
+	const user = await User.findOne({
+		where: {
+			token,
+			expire: { [Op.gte]: Date.now() },
+		},
+	});
+	if (!user)
+		return res.status(400).json({ ok: false, message: "Token not valid" });
+
+	res.json({ ok: "Show form reset password" });
 };
 
-controller.reset = (req, res) => {
-	res.json({ ok: true });
+controller.reset = async (req, res) => {
+	const { token } = req.params;
+
+	const user = await User.findOne({
+		where: {
+			token,
+			expire: { [Op.gte]: Date.now() },
+		},
+	});
+
+	if (!user)
+		return res.status(400).json({ ok: false, message: "Token not valid" });
+
+	await user.update({ password: req.body.password, token: null, expire: null });
+
+	res.json({ ok: user });
 };
 
 module.exports = controller;
