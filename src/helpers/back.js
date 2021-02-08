@@ -7,7 +7,7 @@ helper.handleErrorSequelize = (err) => {
 		/**
 		 * TODO: Session global error (try later)  */
 		console.log(err);
-		return { error: { message: "Ha ocurrido un error, intentalo mas tarde" } };
+		return { global: { message: "Ha ocurrido un error, intentalo mas tarde" } };
 	}
 
 	if (
@@ -16,7 +16,7 @@ helper.handleErrorSequelize = (err) => {
 	) {
 		err = _.indexBy(err.errors, "path"); /* https://underscorejs.org/#indexBy */
 
-		return { errors: err };
+		return err;
 	}
 
 	return err;

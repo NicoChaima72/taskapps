@@ -1,5 +1,5 @@
 module.exports = {
 	User: require("./UserModel"),
-	Project: require("./ProjectModel"),
+	Category: require("./CategoryModel"),
 	Task: require("./TaskModel"),
 };

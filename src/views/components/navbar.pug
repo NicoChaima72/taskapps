@@ -1,0 +1,52 @@
+.navbar.py-5
+    .flex.justify-between.text-gray-500
+        .relative
+            button#hamburgerButton
+                svg.w-6(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
+                    path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 6h16M4 12h16m-7 6h7')
+            #hamburgerContainer.absolute.left-0.w-60.p-3.bg-white.border.rounded-lg.shadow.hidden.z-10
+                div
+                    .flex.items-center.space-x-2.py-2
+                        img(src=`https://ui-avatars.com/api/?name=${user.name}`).bg-gray-600.rounded-full.w-10
+                        p.text-gray-700.text-xl.truncate #{user.name}
+                hr
+                a(href="/").pt-3.pb-1.px-2.block.text-gray-700 Inicio
+                form(action="/logout" method="post") 
+                    button(type="submit").text-red-500.py-2.px-2.block.w-full.text-left Cerrar sesion
+        .flex.space-x-5
+            button#btnSearch
+                svg.w-6(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
+                    path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z')
+            button
+                svg.w-6(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
+                    path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4')
+    div#containerSearch.hidden
+        form(action="" method="GET").relative.text-gray-500.mt-2
+            input#txtSearch.w-full.border.border-gray-300.h-10.px-5.pr-10.rounded-full.text-sm(type='search' name='search' placeholder='Buscar mis categorias' class='focus:outline-none' required='')
+            button.absolute.right-0.top-0.mt-3.mr-4(type='submit')
+                svg#Capa_1.h-4.w-4.fill-current(xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' x='0px' y='0px' viewBox='0 0 56.966 56.966' style='enable-background:new 0 0 56.966 56.966;' xml:space='preserve' width='512px' height='512px')
+                    path(d='M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z')
+
+
+
+
+script.
+    const btnHamburger = document.getElementById('hamburgerButton');
+    const containerHamburger = document.getElementById('hamburgerContainer')
+    const btnSearch = document.getElementById('btnSearch');
+    const containerSearch = document.getElementById('containerSearch');
+
+    btnHamburger.addEventListener('click', () => {
+        containerSearch.classList.contains('hidden') ? null : containerSearch.classList.add('hidden');
+        containerHamburger.classList.toggle('hidden');
+    })
+    containerHamburger.addEventListener('blur', () => {
+        //- containerSearch.classList.contains('hidden') ? null : containerSearch.classList.add('hidden');
+        //- containerHamburger.classList.toggle('hidden');
+        console.log('BLUR')
+    })
+    btnSearch.addEventListener('click', () => {
+        containerHamburger.classList.contains('hidden') ? null : containerHamburger.classList.add('hidden');
+        containerSearch.classList.toggle('hidden');
+        document.getElementById('txtSearch').focus()
+    })    

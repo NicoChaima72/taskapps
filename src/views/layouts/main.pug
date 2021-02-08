@@ -1,8 +1,23 @@
 <!DOCTYPE html>
-html(lang="en")
+html(lang="es")
     head
         meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        meta(name="theme-color" content="#E2E8F0")
         title #{pageName ? pageName : 'Mis tareas'} - #{title}
-    body
-        block content
+        link(rel="stylesheet" href="/dist/css/bundle.css")
+        block links
+    body.container.px-5.mx-auto.bg-blueGray-100.text-gray-700.font-sans
+        include ../components/navbar.pug
+        
+        
+        .pb-24
+            include ../components/messages.pug
+            
+            block content
+
+
+
+        script(src="/dist/js/bundle.js")
+        block scripts

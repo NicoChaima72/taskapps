@@ -2,6 +2,8 @@ const { Sequelize, DataTypes } = require("sequelize");
 const bcrypt = require("bcryptjs");
 const sequelize = require("../config/db");
 
+const Category = require("./CategoryModel");
+
 const User = sequelize.define(
 	"User",
 	{
@@ -60,5 +62,7 @@ const User = sequelize.define(
 User.prototype.verifyPassword = function (password) {
 	return bcrypt.compareSync(password, this.password);
 };
+
+User.hasMany(Category, { foreignKey: "userId" });
 
 module.exports = User;

@@ -1,0 +1,31 @@
+doctype html
+html(lang="es")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(name="theme-color" content="#E2E8F0")
+        title #{pageName ? pageName : 'Mis tareas'} - #{title}
+        link(rel="stylesheet" href="/dist/css/bundle.css")
+    body.container.px-5.mx-auto.bg-blueGray-100.text-gray-700.font-sans
+        .navbar.py-5.mb-8
+            h3.font-bold.text-3xl #{title}
+
+        .max-w-xl.mx-auto
+            include ../components/messages.pug
+
+        form(action="/password/reset?_method=PUT" method="POST").max-w-xl.mx-auto.bg-white.p-5.shadow-lg.rounded-lg.mt-3
+            input(type="hidden", name="_method" value="PUT")
+            h1(class="md:text-3xl").font-medium.text-2xl.text-center.my-3.mb-5 Recuperar contraseña
+            p.mb-4.text-sm Enviaremos un correo a tu bandeja de entrada para que puedas reestablecer tu contraseña.
+            .mb-5
+                label(for="email") Email
+                input(type="email" name="email" id="email" class={'border-red-500': errors.email} value=data.email ? data.email : '').form-input.w-full.border.rounded
+                if errors.email
+                    span.text-red-500.text-xs #{errors.email.message}
+
+            button(type="submit" class=`bg-${helpers.getRandomColor()}-500`).mt-5.block.w-full.p-2.rounded.text-white.font-medium Recuperar
+
+            hr.my-3
+            p.text-sm.text-center
+                a(href="/login").font-medium Volver a iniciar sesion.

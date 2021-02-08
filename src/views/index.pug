@@ -1,4 +1,75 @@
 extends layouts/main
 
 block content
-    h1 Index!
+
+    h1.text-3xl.font-medium.py-3 Tu lista de tareas
+
+    section
+        .flex.justify-between.items-center.pt-5.pb-2
+            h3.text-lg.text-gray-500 Categorias
+            a(href="/categories" class="hover:text-gray-600").text-gray-400.text-sm Ver todas
+        div(class="space-x-2 lg: space-x-4")#container-categories.flex.flex-no-wrap.overflow-x-auto.relative
+            each category in categories
+                a(href=`/categories/${category.url}` class='w-9/12 md:w-6/12 lg:w-4/12').flex-none.bg-white.rounded.shadow-sm.p-4.relative.pb-6.mb-2
+                    .flex.justify-between.items-start
+                        .leading-none
+                            h4.font-semibold.text-xl.leading-none.break-word #{category.name}
+                            p(id=`tasks-total-${category.id}`).text-gray-400.text-sm #{category.Tasks.length > 0 ? category.Tasks.length : 'Sin '} Tareas
+                        if (category.Tasks.length > 0)
+                            p(id=`tasks-percent-${category.id}` class=`text-${category.color}-500`).text-3xl.font-bold.ml-2 #{category.stats().percent}%
+                        else
+                            p(class=`text-${category.color}-400`).text-4xl.font-bold
+                                svg.w-14(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor')
+                                    path(d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z')
+
+                    if (category.Tasks.length > 0)
+                        div(class=`bg-${category.color}-200`).shadow.w-full.rounded
+                            div(id=`progress-category-${category.id}` class=`bg-${category.color}-500` style=`width: ${category.stats().percent}%`).leading-none.py-1.rounded.my-1
+                    small(id=`category-date-${category.id}`).block.text-xs.text-gray-400.absolute.right-4.bottom-2 #{helpers.formatDate(category.updatedAt)}
+
+
+    section.pt-8
+        h3.text-lg.text-gray-500.pb-2 Ultimas Tareas
+
+        .flex.flex-col.space-y-2
+            each task in tasks
+                label.flex.items-center.p-3.bg-white.rounded.shadow-sm.w-full.leading-none.cursor-pointer
+                    input(type='checkbox' class=`border-${task.Category.color}-600 text-${task.Category.color}-600` task-id=`${task.id}` checked= task.state == 1 ? true : false).task.form-checkbox.p-4.rounded-full.border-2
+                    span(id=`label-task-${task.id}`).ml-4.break-word #{task.description}
+
+            
+    .btn-bottom-right
+        .relative
+            button(class="hover:bg-blue-500")#btn-add-category.py-2.px-4.bg-blue-600.text-white.rounded-full.flex.items-center.font-medium
+                svg.w-7(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor')
+                    path(fill-rule='evenodd' d='M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z' clip-rule='evenodd')
+                span Agregar categoria
+            button(class="hover:bg-blue-500")#btn-close-category.p-2.bg-blue-600.text-white.rounded-full.flex.items-center.font-medium.shadow-lg.hidden
+                svg.w-6(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor')
+                    path(fill-rule='evenodd' d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z' clip-rule='evenodd')
+
+            #container-add-category.absolute.bg-white.rounded-lg.shadow-lg.p-5.border.border-gray-400.right-0.w-80.hidden(style="top: -12rem;")
+                form(action="/categories" method="POST")
+                    h3.text-xl Agregar categoria
+                    input#txt-category.form-input.my-4.block.w-full.border.rounded(placeholder="Nombre" name="name" maxlength="32" required)
+                    button(class="hover:bg-blue-500" type="submit").bg-blue-600.w-full.p-2.rounded-lg.text-white Agregar
+
+
+block scripts
+    script.
+        const btnAddCategory = document.getElementById('btn-add-category');
+        const btnCloseCategory = document.getElementById('btn-close-category');
+        const containerAddCategory = document.getElementById('container-add-category');
+
+        btnAddCategory.addEventListener("click", () => {
+            btnAddCategory.classList.add('hidden')
+            btnCloseCategory.classList.remove('hidden')
+            containerAddCategory.classList.remove('hidden')
+            document.getElementById('txt-category').focus()
+        })
+
+        btnCloseCategory.addEventListener("click", () => {
+            btnCloseCategory.classList.add('hidden')
+            btnAddCategory.classList.remove('hidden')
+            containerAddCategory.classList.add('hidden')
+        })

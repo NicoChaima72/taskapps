@@ -1,0 +1,36 @@
+doctype html
+html(lang="es")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(name="theme-color" content="#E2E8F0")
+        title #{pageName ? pageName : 'Mis tareas'} - #{title}
+        link(rel="stylesheet" href="/dist/css/bundle.css")
+    body.container.px-5.mx-auto.bg-blueGray-100.text-gray-700.font-sans
+        .navbar.py-5.mb-8
+            h3.font-bold.text-3xl #{title}
+
+        .max-w-xl.mx-auto
+            include ../components/messages.pug
+
+        form(action="/login" method="POST").max-w-xl.mx-auto.bg-white.p-5.shadow-lg.rounded-lg.mt-3
+            h1(class="md:text-3xl").font-medium.text-2xl.text-center.my-3.mb-5 Iniciar sesion
+            .mb-3
+                label(for="email") Email
+                input(type="email" name="email" id="email" class={'border-red-500': errors.email} value=data.email ? data.email : '').form-input.w-full.border.rounded
+                if errors.email
+                    span.text-red-500.text-xs #{errors.email.message}
+
+            .mb-3
+                label(for="password") Contraseña
+                input(type="password" name="password" id="password" class={'border-red-500': errors.password} value=data.password ? data.password : '').form-input.w-full.border.rounded
+                if errors.password
+                    span.text-red-500.text-xs #{errors.password.message}
+
+            button(type="submit" class=`bg-${helpers.getRandomColor()}-500`).mt-5.block.w-full.p-2.rounded.text-white.font-medium Ingresar
+
+            a(href="/password/reset").block.text-sm.text-right.underline.text-gray-500.mt-2 Olvidé mi contraseña
+            hr.my-3
+            p.text-sm.text-center ¿No tienes cuenta? 
+                a(href="/register").font-medium Crear una.

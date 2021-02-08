@@ -1,26 +1,53 @@
 const { auth } = require("../controllers");
 const { AuthRequest } = require("../requests");
+const authMiddleware = require("../middlewares/authMiddleware");
 
 module.exports = (router) => {
-	router.get("/login", auth.showLoginForm);
+	router.get("/login", authMiddleware.isNotAuthenticated, auth.showLoginForm);
 
-	router.post("/login", auth.login);
+	router.post("/login", authMiddleware.isNotAuthenticated, auth.login);
 
-	router.get("/register", auth.showRegistrationForm);
+	router.get(
+		"/register",
+		authMiddleware.isNotAuthenticated,
+		auth.showRegistrationForm
+	);
 
-	router.post("/register", auth.register);
+	router.post("/register", authMiddleware.isNotAuthenticated, auth.register);
 
-	router.get("/register/activate/:token", auth.activate);
+	router.get(
+		"/register/activate/:token",
+		authMiddleware.isNotAuthenticated,
+		auth.activate
+	);
 
-	router.post("/logout", auth.logout);
+	router.post("/logout", authMiddleware.isAuthenticated, auth.logout);
 
-	router.get("/password/reset", auth.showLinkRequestForm);
+	router.get(
+		"/password/reset",
+		authMiddleware.isNotAuthenticated,
+		auth.showLinkRequestForm
+	);
 
-	router.put("/password/reset", auth.sendResetLinkEmail);
+	router.put(
+		"/password/reset",
+		authMiddleware.isNotAuthenticated,
+		auth.sendResetLinkEmail
+	);
 
-	router.get("/password/reset/:token", auth.showResetForm);
+	router.get(
+		"/password/reset/:token",
+		authMiddleware.isNotAuthenticated,
+		auth.showResetForm
+	);
 
-	router.patch("/password/reset/:token", AuthRequest.resetPassword, auth.reset);
+	router.put(
+		"/password/reset/:token",
+		authMiddleware.isNotAuthenticated,
+		auth.reset
+	);
+
+	// BUG: abrir reset password desde otra cuenta ya iniciada
 
 	return router;
 };

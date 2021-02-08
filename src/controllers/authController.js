@@ -1,25 +1,36 @@
+require('../config/passport')
+const passport = require("passport");
 const { User } = require("../models");
+const { Op } = require("sequelize");
 const uniqid = require("uniqid");
 const helpers = require("../helpers/back");
 const emailService = require("../services/email");
-const { uniq, uniqueId } = require("underscore");
-const { Op } = require("sequelize");
+
+const AuthRequest = require("../requests/authRequest");
 
 const controller = {};
 
 controller.showLoginForm = (req, res) => {
-	res.json({ ok: "Show login form" });
+	res.render("auth/login");
 };
 
-controller.login = (req, res) => {
-	res.json({ ok: true });
+controller.login = (req, res, next) => {
+	AuthRequest.login(req, res);
+
+	passport.authenticate("local.signin", {
+		successRedirect: "/",
+		failureRedirect: "/login",
+		failureFlash: true,
+	})(req, res, next);
 };
 
 controller.showRegistrationForm = (req, res) => {
-	res.json({ ok: "Show registration form" });
+	res.render("auth/register");
 };
 
 controller.register = async (req, res) => {
+	AuthRequest.register(req, res);
+
 	const { name, email, password } = req.body;
 	let user;
 
@@ -31,7 +42,11 @@ controller.register = async (req, res) => {
 			token: uniqid(),
 		});
 	} catch (err) {
-		return res.json(helpers.handleErrorSequelize(err));
+		backURL = req.header("Referer") || "/";
+		req.flash("data", req.body);
+		req.flash("errors", helpers.handleErrorSequelize(err));
+
+		return res.redirect(backURL);
 	}
 
 	const confirmUrl = `http://localhost:3000/register/activate/${user.token}`;
@@ -43,11 +58,15 @@ controller.register = async (req, res) => {
 			archive: "auth/confirmAccount",
 			confirmUrl,
 		})
-		.then((info) => res.json({ ok: true, info, confirmUrl }))
+		.then((info) => {
+			req.flash("success", "Cuenta creada, verifica tu correo.");
+			req.flash("data", { email });
+			res.redirect("/login");
+		})
 		.catch(async (err) => {
 			await user.destroy();
-			console.log(err);
-			return res.json({ ok: false, err });
+			req.flash("error", "Ha ocurrido un error, intenta más tarde.");
+			return res.redirect("/register");
 		});
 };
 
@@ -56,31 +75,39 @@ controller.activate = async (req, res) => {
 
 	const user = await User.findOne({ where: { token } });
 
-	if (!user) return res.json({ ok: false });
+	if (!user) {
+		req.flash("error", "Token expirado.");
+		return res.redirect("/login");
+	}
 
 	await user.update({ isActive: 1, token: null });
 
-	res.json({ ok: true });
+	req.flash("data", { email: user.email });
+	req.flash("success", "Cuenta verificada, puedes iniciar sesion.");
+	res.redirect("/login");
 };
 
 controller.logout = (req, res) => {
-	res.json({ ok: true });
+	req.logOut();
+	res.redirect("/login");
 };
 
 controller.showLinkRequestForm = (req, res) => {
-	res.json({ ok: "Show form link request" });
+	res.render("auth/link-request");
 };
 
 controller.sendResetLinkEmail = async (req, res) => {
-	const { email } = req.body;
+	AuthRequest.linkRequest(req, res);
 
-	if (!email)
-		return res.status(400).json({ ok: false, message: "Email is required" });
+	const { email } = req.body;
 
 	const user = await User.findOne({ where: { email: email } });
 
-	if (!user)
-		return res.status(400).json({ ok: false, message: "Email not exist" });
+	if (!user) {
+		req.flash("data", {email})
+		req.flash("error", "El email no está registrado")
+		return res.redirect('/password/reset')
+}
 
 	user.token = uniqid();
 	user.expire = Date.now() + 1000 * 60 * 60 * 2; /** 2hrs */
@@ -92,14 +119,18 @@ controller.sendResetLinkEmail = async (req, res) => {
 	emailService
 		.sendEmail({
 			user,
-			subject: `Olvidé mi contraseña`,
+			subject: `Recuperar contraseña`,
 			archive: "auth/resetPassword",
 			confirmUrl,
 		})
-		.then((info) => res.json({ ok: true, info, confirmUrl }))
+		.then((info) => {
+			req.flash("success", "Hemos enviado un link a tu correo para recuperar tu contraseña.");
+			req.flash("data", { email });
+			res.redirect("/login");
+		})
 		.catch(async (err) => {
-			console.log(err);
-			return res.json({ ok: false, err });
+			req.flash("error", "Ha ocurrido un error, intenta más tarde.");
+			return res.redirect("/password/reset");
 		});
 };
 
@@ -112,13 +143,17 @@ controller.showResetForm = async (req, res) => {
 			expire: { [Op.gte]: Date.now() },
 		},
 	});
-	if (!user)
-		return res.status(400).json({ ok: false, message: "Token not valid" });
+	if (!user) {
+		req.flash("error", "Token expirado.");
+		return res.redirect("/login");
+	}
 
-	res.json({ ok: "Show form reset password" });
+	res.render('auth/reset.pug', {token});
 };
 
 controller.reset = async (req, res) => {
+	AuthRequest.resetPassword(req, res)
+	
 	const { token } = req.params;
 
 	const user = await User.findOne({
@@ -128,12 +163,16 @@ controller.reset = async (req, res) => {
 		},
 	});
 
-	if (!user)
-		return res.status(400).json({ ok: false, message: "Token not valid" });
+	if (!user) {
+		req.flash("error", "Token expirado.");
+		return res.redirect("/login");
+	}
 
-	await user.update({ password: req.body.password, token: null, expire: null });
+	await user.update({ password: req.body.password, token: null, expire: null, isActive: 1 });
 
-	res.json({ ok: user });
+	req.flash("success", "Contraseña cambiada con exito.");
+			req.flash("data", { email: user.email });
+			res.redirect("/login");
 };
 
 module.exports = controller;

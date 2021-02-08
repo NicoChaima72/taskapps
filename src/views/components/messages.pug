@@ -1,0 +1,49 @@
+if success.length > 0 
+    #container-message-success.flex.items-start.justify-between.bg-white.shadow.rounded-md.py-4.px-3
+        .flex.items-start.w-full
+            .text-green-500
+                svg.w-5(fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg')
+                    path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z')
+
+            .text-sm.font-medium.ml-2 #{success}
+        button#btn-close-message-success.text-gray-400.cursor-pointer.ml-2(class='hover:text-gray-800')
+            svg.w-4(fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg')
+                path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12')
+
+if error.length > 0 
+    #container-message-error.flex.items-start.justify-between.bg-white.shadow.rounded-md.py-4.px-3
+        .flex.items-start.w-full
+            .text-red-500
+                svg.w-5(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
+                    path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z')
+
+            .text-sm.font-medium.ml-2 #{error}
+        button#btn-close-message-error.text-gray-400.cursor-pointer.ml-2(class='hover:text-gray-800')
+            svg.w-4(fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg')
+                path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12')
+
+//- if errors.length > 0 
+//-     .relative.flex.flex-col.bg-white.shadow.rounded-md.py-5.pl-6.pr-8(class='sm:flex-row sm:items-center sm:pr-6')
+//-         .flex.flex-row.items-center.border-b.w-full.pb-4(class='sm:border-b-0 sm:w-auto sm:pb-0')
+//-             .text-green-500
+//-                 svg.w-6.h-6(class='sm:w-5 sm:h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg')
+//-                     path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z')
+//-             .text-sm.font-medium.ml-2 Success Payment.
+//-         .text-sm.tracking-wide.text-gray-500.mt-4(class='sm:mt-0 sm:ml-4') Your Payment was Successful. You can use our services!
+//-         .absolute.ml-auto.right-4.top-4.text-gray-400.cursor-pointer(class='sm:relative sm:top-auto sm:right-auto hover:text-gray-800')
+//-             svg.w-4.h-4(fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg')
+//-                 path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12')
+
+
+script.
+    if (document.getElementById('btn-close-message-success')) {
+        document.getElementById('btn-close-message-success').addEventListener('click', function() {
+            document.getElementById('container-message-success').remove()
+        })
+    }
+
+    if (document.getElementById('btn-close-message-error')) {
+        document.getElementById('btn-close-message-error').addEventListener('click', function() {
+            document.getElementById('container-message-error').remove()
+        })
+    }

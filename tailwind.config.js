@@ -4,7 +4,26 @@ module.exports = {
 	purge: [],
 	darkMode: false, // or 'media' or 'class'
 	theme: {
+		customForms: (theme) => ({
+			default: {
+				checkbox: {
+					"&:focus": {
+						borderColor: undefined,
+					},
+				},
+			},
+		}),
 		extend: {},
+		container: {
+			center: true,
+			padding: {
+				default: ".75rem",
+				sm: "2rem",
+				md: ".5rem",
+				lg: ".75rem",
+				xl: "1.25rem",
+			},
+		},
 		colors: {
 			white: colors.white,
 			black: colors.black,
@@ -35,5 +54,5 @@ module.exports = {
 	variants: {
 		extend: {},
 	},
-	plugins: [],
+	plugins: [require("@tailwindcss/custom-forms")],
 };
