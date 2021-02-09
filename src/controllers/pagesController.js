@@ -18,7 +18,7 @@ controller.home = async (req, res) => {
 		where: {userId: req.user.id}
 	});
 
-	res.render("index", { categories, tasks });
+	res.render("index", { categories, tasks, namePage: 'Inicio', currentPage: 'pages.home' });
 };
 
 module.exports = controller;

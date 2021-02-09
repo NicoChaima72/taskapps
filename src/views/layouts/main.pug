@@ -5,10 +5,11 @@ html(lang="es")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport" content="width=device-width, initial-scale=1.0")
         meta(name="theme-color" content="#E2E8F0")
-        title #{pageName ? pageName : 'Mis tareas'} - #{title}
+        block title
         link(rel="stylesheet" href="/dist/css/bundle.css")
         block links
     body.container.px-5.mx-auto.bg-blueGray-100.text-gray-700.font-sans
+        //- input(type="hidden", name="current-page" value=)
         include ../components/navbar.pug
         
         

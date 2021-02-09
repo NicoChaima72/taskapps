@@ -1,14 +1,18 @@
 import axios from "axios";
 
 const editCategory = async () => {
+	const form = document.getElementById("form-edit-category");
+	const data = new FormData(form)
+
 	const txtCategory = document.getElementById("txt-edit-category");
 	const url = txtCategory.getAttribute("category-url");
-	const name = txtCategory.value;
 
+	let name = data.get("name");
+	name = name.replace("<script>", "");
+	name = name.replace("</script>", "");
+	
 	const res = await axios.put(`/categories/${url}`, { name });
 
-    console.log(res.data)
-    
 	return res.data;
 };
 
@@ -21,12 +25,12 @@ const generateFormEditCategory = () => {
 	
 	const html = `
         <form id="form-edit-category" class="block w-full">
-            <input value="${value}" maxlength="32" id="txt-edit-category" category-url="${url}" class="form-input block w-full" onfocus="const value = this.value; this.value = null; this.value=value">
+            <input required value='${value}' name="name" maxlength="32" id="txt-edit-category" category-url="${url}" class="form-input block w-full" onfocus="const value = this.value; this.value = null; this.value=value">
         </form>
     `;
 
-	label.innerHTML = html;
-
+	console.log(html)
+	label.innerHTML = `${html}`;
 	const txtEditCategory = document.getElementById("txt-edit-category");
 	txtEditCategory.focus();
 
@@ -37,7 +41,7 @@ const generateFormEditCategory = () => {
 		.addEventListener("submit", async (e) => {
 			e.preventDefault();
 			const newCategory = await editCategory();
-			label.innerHTML = newCategory.category.name;
+			label.innerText = newCategory.category.name;
 		});
 };
 

@@ -58,7 +58,7 @@ controller.update = async (req, res, next) => {
 
 	await category.update({ name });
 
-	res.json({ ok: true, category });
+	return res.json({ ok: true, category });
 };
 
 controller.destroy = async (req, res, next) => {

@@ -4,7 +4,7 @@ const request = {};
 
 request.store = (req, res) => {
 	const validationRule = {
-		description: "required|max:32",
+		description: "required|max:50",
 	};
 
 	return validate(req.body, validationRule, {}, req, res);
@@ -12,7 +12,7 @@ request.store = (req, res) => {
 
 request.update = (req, res) => {
 	const validationRule = {
-		description: "required|max:32",
+		description: "required|max:50",
 	};
 
 	return validate(req.body, validationRule, {}, req, res);

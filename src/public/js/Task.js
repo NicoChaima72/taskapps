@@ -18,9 +18,16 @@ const addTask = async () => {
 };
 
 const editTask = async () => {
+	const form = document.getElementById("form-edit-task")
+	const data = new FormData(form);
+
 	const txtTask = document.getElementById("txt-edit-task");
 	const id = txtTask.getAttribute("task-id");
-	const description = txtTask.value;
+
+	// serielize
+	let description = data.get("description")
+	description = description.replace('<script>', '')
+	description = description.replace('</script>', '')
 
 	const res = await axios.put(`/tasks/${id}`, { description });
 
@@ -40,7 +47,7 @@ const changeProgressBar = async (stats) => {
 		const tasksCompleted = document.getElementById("tasks-completed");
 		const tasksTotal = document.getElementById("tasks-total");
 		
-		console.log({ progressBar, tasksPercent, tasksCompleted, tasksTotal });
+		console.log({ progressBar, tasksPercent, tasksCompleted, tasksTotal, stats });
 		
 		tasksCompleted.textContent = stats.completed;
 		tasksTotal.textContent = stats.tasks;
@@ -167,9 +174,9 @@ const drawTask = (data) => {
 	const html = `
 		<label class="flex items-center p-3 bg-white rounded shadow-sm w-full leading-none cursor-pointer">
 			<input class="task border-${category.color}-600 text-${category.color}-600 form-checkbox p-4 rounded-full border-2" type="checkbox" task-id="${task.id}" />
-			<span class="ml-4">${task.description}</span>
+			<span class="ml-4 block break-word mr-2 w-full" id="label-task-${task.id}"></span>
 			<div class="flex ml-auto space-x-2 text-gray-400">
-				<button class="hover:text-${category.color}-300" task-id="${task.id}">
+				<button class="hover:text-${category.color}-300 btn-edit-task" task-id="${task.id}">
 					<svg class="w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
 					</svg>
@@ -184,9 +191,11 @@ const drawTask = (data) => {
 	`;
 
 	containerTasks.innerHTML = html + containerTasks.innerHTML;
+	document.getElementById(`label-task-${task.id}`).innerText = task.description;
 
 	listenerChangeState();
 	listenerDeleteTask();
+	listenerEditTask();
 };
 
 const generateFormEditTask = (id, value) => {
@@ -194,7 +203,7 @@ const generateFormEditTask = (id, value) => {
 
 	const html = `
 		<form id="form-edit-task">
-			<input type="text" maxlength="50" id="txt-edit-task" task-id="${id}" value="${value}" class="border border-gray-400 p-1 w-full" onfocus="const value = this.value; this.value = null; this.value=value">
+			<input required type="text" name="description" maxlength="50" id="txt-edit-task" task-id="${id}" value='${value}' class="border border-gray-400 p-1 w-full" onfocus="const value = this.value; this.value = null; this.value=value">
 		</form>
 	`;
 
@@ -210,7 +219,7 @@ const generateFormEditTask = (id, value) => {
 		.addEventListener("submit", async (e) => {
 			e.preventDefault();
 			const newTask = await editTask();
-			label.innerHTML = newTask.task.description;
+			label.innerText = newTask.task.description;
 		});
 };
 

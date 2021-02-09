@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 ::-webkit-scrollbar {
-	height: 3px; /* height of horizontal scrollbar ← You're missing this */
+	height: 5px; /* height of horizontal scrollbar ← You're missing this */
 	width: 5px; /* width of vertical scrollbar */
 }
 ::-webkit-scrollbar-thumb {

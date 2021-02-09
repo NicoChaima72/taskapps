@@ -5,7 +5,7 @@ middleware.isAuthenticated = (req, res, next) => {
 		return next();
 	} else {
         // req.flash('redirectURL', 'Guardar en input hidden y en el controlador verificar si está y redireccionar')
-		req.flash("error", "No estás autenticado");
+		// req.flash("error", "No estás autenticado");
 		res.redirect("/login");
 	}
 };

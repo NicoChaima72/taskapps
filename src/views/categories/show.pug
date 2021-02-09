@@ -1,5 +1,8 @@
 extends ../layouts/main
 
+block title
+    title Categoria #{`${category.name} - ${title}`}
+
 block content
     input(type="hidden" name="url" value=`${category.url}`)#category-url
     .bg-white.p-3.rounded-lg.pb-4.shadow-sm
@@ -47,8 +50,6 @@ block content
             else
                 #text-empty-tasks.bg-white.p-3.rounded.text-center.text-gray-400.border.text-sm No hay tareas registradas. Añade una!
 
-    //-     p #{helpers.vardump(category.Tasks)}
-
 
     .btn-bottom-right
         .relative
@@ -63,7 +64,7 @@ block content
             #container-add-category.absolute.bg-white.rounded-lg.shadow-lg.p-5.border.border-gray-400.right-0.w-80.hidden(style="top: -12rem;")
                 form(action=`/tasks/${category.url}` method="POST")#form-add-task
                     h3.text-xl Nueva tarea
-                    input#txt-category.form-input.my-4.block.w-full.border.rounded(placeholder="Descripcion" name="description" maxlength="50")
+                    input#txt-category.form-input.my-4.block.w-full.border.rounded(placeholder="Descripcion" name="description" maxlength="50" required)
                     button(class=`bg-${category.color}-600 hover:bg-${category.color}-500`).w-full.p-2.rounded-lg.text-white Agregar
 
 
