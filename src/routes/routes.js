@@ -9,6 +9,7 @@ module.exports = (app) => {
 	Auth(router);
 
 	router.get("/", authMiddleware.isAuthenticated, pages.home);
+	router.get("/search/:search", authMiddleware.isAuthenticated, pages.search);
 
 	router.use('/categories', authMiddleware.isAuthenticated);
 	router.get("/categories", categories.index);
@@ -20,10 +21,10 @@ module.exports = (app) => {
 	router.delete("/categories/:project_url", categories.destroy);
 	
 	router.use('/tasks', authMiddleware.isAuthenticated);
-	router.get("/tasks/:project_url", tasks.index);
-	router.get("/tasks/:project_url/create", tasks.create);
+	// router.get("/tasks/:project_url", tasks.index);
+	// router.get("/tasks/:project_url/create", tasks.create);
 	router.post("/tasks/:project_url", tasks.store);
-	router.get("/tasks/:task_id/edit", tasks.edit);
+	// router.get("/tasks/:task_id/edit", tasks.edit);
 	router.put("/tasks/:task_id", tasks.update);
 	router.put("/tasks/:task_id/state", tasks.updateState);
 	router.delete("/tasks/:task_id", tasks.destroy);

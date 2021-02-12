@@ -21,4 +21,12 @@ controller.home = async (req, res) => {
 	res.render("index", { categories, tasks, namePage: 'Inicio', currentPage: 'pages.home' });
 };
 
+controller.search = async (req, res) => {
+	const {search} = req.body;
+	const categories = await Category.findAll({include: {model: Task}});
+	const tasks = await Task.findAll({include: {model: Category}})
+
+	return res.json({ok: true, categories, tasks})
+}
+
 module.exports = controller;

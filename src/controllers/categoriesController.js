@@ -10,7 +10,7 @@ controller.index = async (req, res, next) => {
 		where: {userId: req.user.id}
 	});
 
-	res.render("categories/index", { categories });
+	res.render("categories/index", { categories, namePage: 'categories.index' });
 };
 
 controller.create = async (req, res, next) => {
@@ -37,7 +37,7 @@ controller.show = async (req, res, next) => {
 	if (!category)
 		return res.status(400).json({ ok: false, message: "Category not exists" });
 
-		res.render("categories/show", { category });
+		res.render("categories/show", { category, namePage: 'categories.show'});
 };
 
 // controller.edit = async (req, res, next) => {

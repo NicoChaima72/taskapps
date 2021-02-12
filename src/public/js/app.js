@@ -1,4 +1,5 @@
 import "../css/app.css";
 
-import "./Task";
-import "./Category";
+import "./UI/Task";
+// import "./Category";
+import './UI/Category'

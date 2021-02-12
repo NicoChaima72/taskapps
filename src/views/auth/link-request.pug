@@ -17,7 +17,7 @@ html(lang="es")
         form(action="/password/reset?_method=PUT" method="POST").max-w-xl.mx-auto.bg-white.p-5.shadow-lg.rounded-lg.mt-3
             input(type="hidden", name="_method" value="PUT")
             h1(class="md:text-3xl").font-medium.text-2xl.text-center.my-3.mb-5 Recuperar contraseña
-            p.mb-4.text-sm Enviaremos un correo a tu bandeja de entrada para que puedas reestablecer tu contraseña.
+            p.mb-4.text-sm.p-4.bg-gray-100.rounded.border Enviaremos un correo a tu bandeja de entrada para que puedas reestablecer tu contraseña.
             .mb-5
                 label(for="email") Email
                 input(type="email" name="email" id="email" class={'border-red-500': errors.email} value=data.email ? data.email : '').form-input.w-full.border.rounded
