@@ -5,7 +5,7 @@ block title
 
 block content
 
-    h1.text-3xl.font-medium.py-3 Tu lista de tareas
+    h1.text-3xl.font-medium.py-3.mt-10 Tu lista de tareas
 
     section
         .flex.justify-between.items-center.pt-5.pb-2
@@ -16,7 +16,7 @@ block content
                 a(href=`/categories/${category.url}` class='w-9/12 md:w-6/12 lg:w-4/12').flex-none.bg-white.rounded.shadow-sm.p-4.relative.pb-6.mb-2
                     .flex.justify-between.items-start
                         .leading-none
-                            h4.font-semibold.text-xl.leading-none.break-word #{category.name}
+                            h4.font-semibold.text-xl.leading-none.break-word !{category.name}
                             p(id=`tasks-total-${category.id}`).text-gray-400.text-sm #{category.Tasks.length > 0 ? category.Tasks.length : 'Sin '} Tareas
                         if (category.Tasks.length > 0)
                             p(id=`tasks-percent-${category.id}` class=`text-${category.color}-500`).text-3xl.font-bold.ml-2 #{category.stats().percent}%
@@ -38,7 +38,7 @@ block content
             each task in tasks
                 label.flex.items-center.p-3.bg-white.rounded.shadow-sm.w-full.leading-none.cursor-pointer
                     input(type='checkbox' class=`border-${task.Category.color}-600 text-${task.Category.color}-600` task-id=`${task.id}` checked= task.state == 1 ? true : false).task.form-checkbox.p-4.rounded-full.border-2
-                    span(id=`label-task-${task.id}`).ml-4.break-word #{task.description}
+                    span(id=`label-task-${task.id}`).ml-4.break-word !{task.description}
 
 
     include ./components/form-category

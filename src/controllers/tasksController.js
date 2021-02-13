@@ -1,5 +1,6 @@
 const { tasks } = require(".");
 const { Task, Category } = require("../models");
+const { clearString } = require("../helpers/back");
 const TaskRequest = require("../requests/taskRequest");
 
 const controller = {};
@@ -33,7 +34,7 @@ controller.store = async (req, res, next) => {
 		return res.status(400).json({ ok: false, message: "Category not exists" });
 		
 	const task = await Task.create(
-		{ description, CategoryId: category.id },
+		{ description: clearString(description), CategoryId: category.id },
 		{ include: Category }
 	);
 
@@ -60,7 +61,7 @@ controller.update = async (req, res, next) => {
 	const { description } = req.body;
 	const task = await Task.findByPk(task_id);
 
-	await task.update({ description });
+	await task.update({ description: clearString(description) });
 
 	res.json({ ok: true, task });
 };

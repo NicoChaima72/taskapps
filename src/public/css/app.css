@@ -23,3 +23,21 @@
 .break-word {
 	word-break: break-word!important;
 }
+
+.rotate {
+  animation: rotation 1s infinite linear;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+
+button {
+	outline: none!important
+}

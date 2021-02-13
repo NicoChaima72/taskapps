@@ -13,7 +13,7 @@ block content
             a(href=`/categories/${category.url}`).flex-none.bg-white.rounded.shadow-sm.p-4.relative.pb-6
                 .flex.justify-between.items-start
                     .leading-none
-                        h4.font-semibold.text-xl.break-word #{category.name}
+                        h4.font-semibold.text-xl.break-word !{category.name}
                         p.text-gray-400.text-sm #{category.Tasks.length > 0 ? category.Tasks.length : 'Sin '} Tareas
                     if (category.Tasks.length > 0)
                         p(class=`text-${category.color}-500`).text-4xl.font-bold.ml-2 #{category.stats().percent}%

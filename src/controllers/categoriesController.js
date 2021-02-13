@@ -1,4 +1,5 @@
 const { Category, Task } = require("../models");
+const {clearString} = require('../helpers/back')
 const CategoryRequest = require("../requests/categoryRequest");
 
 const controller = {};
@@ -21,7 +22,7 @@ controller.store = async (req, res, next) => {
 	CategoryRequest.store(req, res);
 	
 	const { name } = req.body;
-	const category = await Category.create({ name, userId: req.user.id });
+	const category = await Category.create({ name: clearString(name), userId: req.user.id });
 
 	res.redirect(`/categories/${category.url}`);
 };
@@ -56,7 +57,7 @@ controller.update = async (req, res, next) => {
 
 	if (!category) return res.json({ ok: false });
 
-	await category.update({ name });
+	await category.update({ name: clearString(name) });
 
 	return res.json({ ok: true, category });
 };

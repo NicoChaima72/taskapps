@@ -10,7 +10,7 @@ const editCategory = async () => {
 
 			const data = await CategoryService.editCategory(url, categoryName);
 
-			document.getElementById(`label-category`).innerText =
+			document.getElementById(`label-category`).innerHTML =
 				data.category.name;
 		});
 };
@@ -48,4 +48,10 @@ const listenerEditCategory = () => {
 
 // ---------------------------------------------------
 
-listenerEditCategory();
+document.addEventListener("DOMContentLoaded", () => {
+	const currentPage = document.getElementById('current-page').value || ''
+	
+	if (currentPage === 'categories.show') {
+		listenerEditCategory();
+	}
+})

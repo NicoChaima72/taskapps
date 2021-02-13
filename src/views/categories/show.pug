@@ -7,7 +7,7 @@ block content
     input(type="hidden" name="url" value=`${category.url}`)#category-url
     .bg-white.p-3.rounded-lg.pb-4.shadow-sm
         .flex.justify-between.items-start.py-3
-            h1(category-url=category.url).text-3xl.font-medium.break-word.w-full#label-category #{category.name}
+            h1(category-url=category.url).text-3xl.font-medium.break-word.w-full#label-category!= category.name
             .relative
                 button#optionsButton
                     svg.w-6(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
@@ -38,7 +38,7 @@ block content
             each task in category.Tasks
                 label.flex.items-center.p-3.bg-white.rounded.shadow-sm.w-full.leading-none.cursor-pointer
                     input(type='checkbox' class=`border-${category.color}-600 text-${category.color}-600` task-id=`${task.id}` checked= task.state == 1 ? true : false).task.form-checkbox.p-4.rounded-full.border-2
-                    span(id=`label-task-${task.id}`).ml-4.block.break-word.mr-2.w-full #{task.description}
+                    span(id=`label-task-${task.id}`).ml-4.block.break-word.mr-2.w-full !{task.description}
                     .flex.ml-auto.space-x-2.text-gray-400.block
                         button(class=`hover:text-${category.color}-300` task-id=`${task.id}` value=task.description).btn-edit-task
                             svg.w-6(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')

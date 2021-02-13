@@ -1,5 +1,7 @@
 .navbar.py-5
-    .flex.justify-between.text-gray-500
+    .flex.justify-between.items-center.text-gray-500
+        //- if namePage == 'pages.home'
+        //-     h3.font-bold.text-3xl.text-gray-700 #{title}
         .relative
             button#hamburgerButton
                 svg.w-6(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
@@ -11,6 +13,7 @@
                         p.text-gray-700.text-xl.truncate #{user.name}
                 hr
                 a(href="/").pt-3.pb-1.px-2.block.text-gray-700 Inicio
+ 
                 form(action="/logout" method="post") 
                     button(type="submit").text-red-500.py-2.px-2.block.w-full.text-left Cerrar sesion
         .flex.space-x-5
@@ -20,12 +23,38 @@
             button
                 svg.w-6(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
                     path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4')
-    div#containerSearch.hidden
-        form(action="" method="POST")#form-search.relative.text-gray-500.mt-2
-            input#txt-search.w-full.border.border-gray-300.h-10.px-5.pr-10.rounded-full.text-sm(type='search' name='search' placeholder='Buscar mis categorias' class='focus:outline-none' required='')
-            button.absolute.right-0.top-0.mt-3.mr-4(type='submit')
-                svg#Capa_1.h-4.w-4.fill-current(xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' x='0px' y='0px' viewBox='0 0 56.966 56.966' style='enable-background:new 0 0 56.966 56.966;' xml:space='preserve' width='512px' height='512px')
-                    path(d='M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z')
+    div#containerSearch.hidden.mt-4.relative
+        input#txt-search.w-full.border.border-gray-300.h-10.px-5.pr-10.rounded-full.text-sm(type='search' name='search-category' placeholder='Buscar mis categorias' class='focus:outline-none' required='')
+        #results-search.hidden.absolute.bg-white.top-12.inset-x-0.p-4.w-full.z-50.rounded-lg.shadow-lg.space-y-4
+            p.text-gray-400.text-sm.mb-1 Categorias
+            .divide-y.rounded.bg-gray-50.rounded-lg.p-2
+                a(href="/").flex.items-center.p-2.group
+                    div(class="group-hover:bg-red-500").p-2.rounded-full.bg-red-400
+                    p.ml-2 Hola mundo
+
+                a(href="/").flex.items-center.p-2
+                    .p-2.rounded-full.bg-green-400
+                    p.ml-2 Hola mundo
+
+                a(href="/").flex.items-center.p-2
+                    .p-2.rounded-full.bg-yellow-400
+                    p.ml-2 Hola mundo
+
+            p.text-gray-400.text-sm.mt-3.mb-1 Tareas
+            .divide-y.rounded.bg-gray-50.rounded-lg.p-2
+                a(href="").flex.items-center.p-2
+                    p.text-sm.mr-2 Nueva tarea
+                    //- p.mx-1 |
+                    p.p-1.rounded-full.bg-red-400
+                    p.ml-1.text-xs.text-gray-400 Hola mundo
+
+                a(href="").flex.items-center.p-2
+                    p.text-sm.mr-2 Vieja tarea
+                    //- p.mx-1 |
+                    p.p-1.rounded-full.bg-blue-400
+                    p.ml-1.text-xs.text-gray-400 Chao mundo
+
+        
 
 
 
@@ -48,10 +77,5 @@ script.
     btnSearch.addEventListener('click', () => {
         containerHamburger.classList.contains('hidden') ? null : containerHamburger.classList.add('hidden');
         containerSearch.classList.toggle('hidden');
-        document.getElementById('txtSearch').focus()
-    })
-
-    const txtSearch = document.getElementById('txtSearch')
-    txtSearch.addEventListener('keyup', function() {
-        console.log(this.value)
+        document.getElementById('txt-search').focus()
     })

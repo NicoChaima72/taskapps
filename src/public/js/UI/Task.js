@@ -19,11 +19,9 @@ const editTask = async () => {
 		const id = txtTask.getAttribute("task-id");
 
 		let description = form.get("description");
-		description = description.replace("<script>", "");
-		description = description.replace("</script>", "");
 
 		const data = await TaskService.editTask(id, description);
-		document.getElementById(`label-task-${id}`).innerText =
+		document.getElementById(`label-task-${id}`).innerHTML =
 			data.task.description;
 	});
 };
@@ -177,7 +175,7 @@ const drawTask = (data) => {
 	const html = `
 		<label class="flex items-center p-3 bg-white rounded shadow-sm w-full leading-none cursor-pointer">
 			<input class="task border-${category.color}-600 text-${category.color}-600 form-checkbox p-4 rounded-full border-2" type="checkbox" task-id="${task.id}" />
-			<span class="ml-4 block break-word mr-2 w-full" id="label-task-${task.id}"></span>
+			<span class="ml-4 block break-word mr-2 w-full" id="label-task-${task.id}">${task.description}</span>
 			<div class="flex ml-auto space-x-2 text-gray-400">
 				<button class="hover:text-${category.color}-300 btn-edit-task" task-id="${task.id}">
 					<svg class="w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -194,7 +192,6 @@ const drawTask = (data) => {
 	`;
 
 	containerTasks.innerHTML = html + containerTasks.innerHTML;
-	document.getElementById(`label-task-${task.id}`).innerText = task.description;
 
 	listenerEditTask();
 	listenerDeleteTask();
@@ -283,8 +280,16 @@ const listenerChangeState = () => {
 
 // -----------------------------------------------
 
-listenerAddTask();
-listenerEditTask();
-listenerDeleteTask();
+document.addEventListener("DOMContentLoaded", () => {
+	const currentPage = document.getElementById('current-page').value || ''
 
-listenerChangeState();
+	if (currentPage === 'categories.show') {
+		listenerAddTask();
+		listenerEditTask();
+		listenerDeleteTask();
+	}
+
+	if (currentPage === 'categories.show' || currentPage === 'pages.home') {
+		listenerChangeState();
+	}
+})
