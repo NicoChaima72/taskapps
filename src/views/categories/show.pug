@@ -5,7 +5,7 @@ block title
 
 block content
     input(type="hidden" name="url" value=`${category.url}`)#category-url
-    .bg-white.p-3.rounded-lg.pb-4.shadow-sm
+    div(class="px-3 md:px-5").bg-white.p-3.rounded-lg.pb-4.shadow-sm
         .flex.justify-between.items-start.py-3
             h1(category-url=category.url).text-3xl.font-medium.break-word.w-full#label-category!= category.name
             .relative
@@ -69,29 +69,4 @@ block content
 
 
 
-block scripts
-    script.
-        const btnOptions = document.getElementById('optionsButton');
-        const containerOptions = document.getElementById('optionsContainer')
-
-        btnOptions.addEventListener('click', () => {
-            containerOptions.classList.toggle('hidden');
-            console.log('click')
-        });
-
-        const btnAddCategory = document.getElementById('btn-add-category');
-        const btnCloseCategory = document.getElementById('btn-close-category');
-        const containerAddCategory = document.getElementById('container-add-category');
-
-        btnAddCategory.addEventListener("click", () => {
-            btnAddCategory.classList.add('hidden')
-            btnCloseCategory.classList.remove('hidden')
-            containerAddCategory.classList.remove('hidden')
-            document.getElementById('txt-category').focus()
-        })
-
-        btnCloseCategory.addEventListener("click", () => {
-            btnCloseCategory.classList.add('hidden')
-            btnAddCategory.classList.remove('hidden')
-            containerAddCategory.classList.add('hidden')
-        })
+    

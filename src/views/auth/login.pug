@@ -9,7 +9,7 @@ html(lang="es")
         link(rel="stylesheet" href="/dist/css/bundle.css")
     body.container.px-5.mx-auto.bg-blueGray-100.text-gray-700.font-sans
         .navbar.py-5.mb-8
-            h3.font-bold.text-3xl #{title}
+            h3.font-bold.text-3xl.cursor-default #{title}
 
         .max-w-xl.mx-auto
             include ../components/messages.pug
@@ -30,7 +30,8 @@ html(lang="es")
 
             button(type="submit" class=`bg-${helpers.getRandomColor()}-500`).mt-5.block.w-full.p-2.rounded.text-white.font-medium Ingresar
 
-            a(href="/password/reset").block.text-sm.text-right.underline.text-gray-500.mt-2 Olvidé mi contraseña
+            .flex.justify-end
+                a(href="/password/reset").text-sm.text-right.underline.text-gray-500.mt-2 Olvidé mi contraseña
             hr.my-3
             p.text-sm.text-center ¿No tienes cuenta? 
                 a(href="/register").font-medium Crear una.

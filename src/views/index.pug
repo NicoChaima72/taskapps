@@ -5,9 +5,9 @@ block title
 
 block content
 
-    h1.text-3xl.font-medium.py-3.mt-10 Tu lista de tareas
+    //- h1.text-3xl.font-medium.py-3.mt-10 Tu lista de tareas
 
-    section
+    section.mt-5
         .flex.justify-between.items-center.pt-5.pb-2
             h3.text-lg.text-gray-500 Categorias
             a(href="/categories" class="hover:text-gray-600").text-gray-400.text-sm Ver todas
@@ -31,7 +31,7 @@ block content
                     small(id=`category-date-${category.id}`).block.text-xs.text-gray-400.absolute.right-4.bottom-2 #{helpers.formatDate(category.updatedAt)}
 
 
-    section.pt-8
+    section.pt-8.mt-4
         h3.text-lg.text-gray-500.pb-2 Ultimas Tareas
 
         .flex.flex-col.space-y-2

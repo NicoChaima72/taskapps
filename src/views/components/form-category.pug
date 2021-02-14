@@ -17,28 +17,3 @@
 
 
 
-
-script.
-    const randomColor = document.getElementById("random-color").value
-
-    const btnAddCategory = document.getElementById('btn-add-category');
-    const btnCloseCategory = document.getElementById('btn-close-category');
-    const btnSubmitCategory = document.getElementById('btn-submit-category');
-    const containerAddCategory = document.getElementById('container-add-category');
-
-    btnAddCategory.classList.add(`bg-${randomColor}-600`, `hover:bg-${randomColor}-600`)
-    btnCloseCategory.classList.add(`bg-${randomColor}-600`, `hover:bg-${randomColor}-600`)
-    btnSubmitCategory.classList.add(`bg-${randomColor}-600`, `hover:bg-${randomColor}-600`)
-
-    btnAddCategory.addEventListener("click", () => {
-        btnAddCategory.classList.add('hidden')
-        btnCloseCategory.classList.remove('hidden')
-        containerAddCategory.classList.remove('hidden')
-        document.getElementById('txt-category').focus()
-    })
-
-    btnCloseCategory.addEventListener("click", () => {
-        btnCloseCategory.classList.add('hidden')
-        btnAddCategory.classList.remove('hidden')
-        containerAddCategory.classList.add('hidden')
-    })

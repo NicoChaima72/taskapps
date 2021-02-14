@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const { Category, Task } = require("../models");
+const {clearString} = require('../helpers/back')
 
 const controller = {};
 
@@ -23,7 +24,9 @@ controller.home = async (req, res) => {
 };
 
 controller.search = async (req, res) => {
-	const {search} = req.params;
+	let {search} = req.params;
+
+	search = clearString(search)
 	const categories = await Category.findAll({
 		where: {
 			name: {

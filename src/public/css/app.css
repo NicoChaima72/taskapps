@@ -14,30 +14,39 @@
 	background: none;
 }
 
+p, h1, h2, h3, h4, h5, h6 {
+	cursor: default;
+}
+
 .btn-bottom-right {
 	position: fixed;
-	bottom: 1rem;
+	bottom: 4.2rem;
 	right: 1rem;
 }
 
+@media (min-width: 768px) {
+	.btn-bottom-right {
+		bottom: 1rem;
+	}
+}
+
 .break-word {
-	word-break: break-word!important;
+	word-break: break-word !important;
 }
 
 .rotate {
-  animation: rotation 1s infinite linear;
+	animation: rotation 1s infinite linear;
 }
 
 @keyframes rotation {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(359deg);
-  }
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(359deg);
+	}
 }
 
-
 button {
-	outline: none!important
+	outline: none !important;
 }

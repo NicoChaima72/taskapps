@@ -5,6 +5,10 @@ exports.vardump = (obj) => JSON.stringify(obj);
 
 exports.formatDate = (date) => moment(date).fromNow();
 
+exports.redirectPrevious = (document) => {
+	return '/categories'
+}
+
 exports.getRandomColor = () => {
     const colors = [
 					"gray",

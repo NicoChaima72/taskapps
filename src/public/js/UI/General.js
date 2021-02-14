@@ -10,7 +10,6 @@ const drawContainerSearch = (result) => {
 	const tasks = result.tasks;
 	const search = result.search;
 
-	console.log(categories, tasks);
 	const resultsSearch = document.getElementById("results-search");
 
 	let categoriesHTML = categories.map((category) => {
@@ -33,7 +32,7 @@ const drawContainerSearch = (result) => {
 			.replace(search.toLowerCase(), span);
 
 		return `
-            <a href="" class="block bg-gray-50 rounded-lg pt-3 pb-2 px-4 group shadow-sm">
+            <a href="/categories/${task.Category.url}" class="block bg-gray-50 rounded-lg pt-3 pb-2 px-4 group shadow-sm">
                 <p class="text-sm mr-2 leading-none break-word">${newDescription}</p>
                 <div class="flex items-center mt-1">
                     <p class="p-1 rounded-full bg-${task.Category.color}-400 group-hover:bg-${task.Category.color}-500"></p>
@@ -90,4 +89,6 @@ const listenerSearchCategoriesAndTasks = () => {
 };
 // -----------------------------------------------------------------
 
-listenerSearchCategoriesAndTasks();
+document.addEventListener("DOMContentLoaded", () => {
+	listenerSearchCategoriesAndTasks();
+})

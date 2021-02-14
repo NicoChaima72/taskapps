@@ -13,13 +13,15 @@ html(lang="es")
         include ../components/navbar.pug
         
         
-        .pb-24
+        .pb-24.relative
             include ../components/messages.pug
 
             input(type="hidden", id="current-page" value=namePage)
             
             block content
 
+            //- space for navigation in phone
+            div(class="block md:hidden").my-10
 
 
         script(src="/dist/js/bundle.js")
