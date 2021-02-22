@@ -50,7 +50,7 @@ Category.prototype.stats = function () {
 	if (this.Tasks.length == 0) return 0;
 	const completed = this.Tasks.filter((task) => task.state == 1);
 	const percent =
-		Math.round((completed.length / this.Tasks.length) * 1000) / 10; // 0.666666666 -> 666.66666 -> 666 / 10 = 66.6 %
+		Math.round((completed.length / this.Tasks.length) * 100); // 0.666666666 -> 666.66666 -> 666 / 10 = 66.6 %
 	return { tasks: this.Tasks.length, completed: completed.length, percent, id: this.id, category: this };
 };
 

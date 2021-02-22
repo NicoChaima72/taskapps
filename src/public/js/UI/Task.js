@@ -45,10 +45,10 @@ const generateOrDestroyProgressBar = (
 	const containerProgressBar = document.getElementById(
 		"container-progress-bar"
 	);
+	const textEmptyTasks = document.getElementById("text-empty-tasks");
+	const titleTasks = document.getElementById("title-tasks");
 
 	if (generateTrueDestroyFalse) {
-		const textEmptyTasks = document.getElementById("text-empty-tasks");
-
 		const html = `
 			<div>
 				<p class="text-xs m-0">
@@ -66,19 +66,22 @@ const generateOrDestroyProgressBar = (
             </div>
 		`;
 
-		textEmptyTasks.parentNode.removeChild(textEmptyTasks);
+		textEmptyTasks.innerHTML = '';
 		containerProgressBar.innerHTML = html;
+		titleTasks.classList.contains('hidden') ? titleTasks.classList.remove('hidden') : null
 	} else {
 		const containerTasks = document.getElementById("container-tasks");
-
+		
 		const html = `
-		<p class="text-gray-400 text-center mt-4">Sin progreso</p>
+		<p class="text-gray-400 text-center mt-4 text-sm">No hay tareas registradas.</p>
 		`;
-
+		
 		containerProgressBar.innerHTML = html;
-		containerTasks.innerHTML = `
-			<div class="bg-white p-3 rounded text-center text-gray-400 border text-sm" id="text-empty-tasks">No hay tareas registradas. Añade una!</div>
+		textEmptyTasks.innerHTML = `
+			<img class="block md:hidden px-24 py-4 mx-auto" src="/img/empty-tasks.svg" alt="" onclick="document.getElementById('btn-add-category').click()"/>
+			<img class="hidden md:block px-16 py-4 mx-auto max-w-xs" src="/img/empty-tasks.svg" alt="" onclick="document.getElementById('btn-add-category').click()"/>
 		`;
+		!titleTasks.classList.contains('hidden') ? titleTasks.classList.add('hidden') : null
 	}
 };
 

@@ -1,4 +1,5 @@
 import GeneralService from "../Services/General";
+import { toggleShowComponent } from "../helpers.js";
 
 const searchCategoriesAndTasks = async (query) => {
 	const res = await GeneralService.searchCategoriesAndTasks(query);
@@ -92,3 +93,5 @@ const listenerSearchCategoriesAndTasks = () => {
 document.addEventListener("DOMContentLoaded", () => {
 	listenerSearchCategoriesAndTasks();
 })
+
+toggleShowComponent(null, document.getElementById("results-search"));

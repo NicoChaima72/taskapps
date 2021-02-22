@@ -1,7 +1,7 @@
 const passport = require("passport")
 const LocalStrategy = require('passport-local')
 
-const {User} = require('../models')
+const {User, Category} = require('../models')
 
 passport.use(
     'local.signin',
@@ -12,7 +12,10 @@ passport.use(
             passReqToCallback: true
         },
         async (req, email, password, done) => {
-            const user = await User.findOne({where: {email}});
+            const user = await User.findOne({
+                where: {email},
+                include: {model: Category}
+            });
 
             if (!user) {
                 req.flash('data', {email})
@@ -40,8 +43,12 @@ passport.serializeUser((user, done) => {
     done(null, user)
 })
 
-passport.deserializeUser((user, done) => {
-    // pruebas aqui
+passport.deserializeUser(async (user, done) => {
+    user = await User.findOne({
+			where: { email: user.email },
+			include: { model: Category },
+		});
+    console.log('DESERIALIZE', user)
     done(null, user)
 })
 

@@ -43,16 +43,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		btnAddCategory.classList.add(
 			`bg-${randomColor}-600`,
-			`hover:bg-${randomColor}-600`
+			`hover:bg-${randomColor}-700`
 		);
 		btnCloseCategory.classList.add(
 			`bg-${randomColor}-600`,
-			`hover:bg-${randomColor}-600`
+			`hover:bg-${randomColor}-700`
 		);
 		btnSubmitCategory.classList.add(
 			`bg-${randomColor}-600`,
-			`hover:bg-${randomColor}-600`
+			`hover:bg-${randomColor}-700`
 		);
+		
+		if (document.getElementById('btn-welcome')) {
+			document.getElementById('btn-welcome').classList.add(
+				`bg-${randomColor}-600`,
+				`hover:bg-${randomColor}-700`
+			);
+		}
 
 		btnAddCategory.addEventListener("click", () => {
 			btnAddCategory.classList.add("hidden");
@@ -60,12 +67,15 @@ document.addEventListener("DOMContentLoaded", () => {
 			containerAddCategory.classList.remove("hidden");
 			document.getElementById("txt-category").focus();
 		});
+		
+		if (document.getElementById('home-title')) document.getElementById("home-title").classList.add(`text-${randomColor}-700`) 
 
 		btnCloseCategory.addEventListener("click", () => {
 			btnCloseCategory.classList.add("hidden");
 			btnAddCategory.classList.remove("hidden");
 			containerAddCategory.classList.add("hidden");
 		});
+
 	}
 });
 

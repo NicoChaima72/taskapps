@@ -8,7 +8,7 @@ controller.home = async (req, res) => {
 	const tasks = await Task.findAll({
 		include: [{
 			model: Category,
-			where: {userId: req.user.id}
+			where: {UserId: req.user.id}
 		}],
 		order: [["createdAt", "DESC"]],
 		limit: 7,
@@ -17,7 +17,7 @@ controller.home = async (req, res) => {
 		include: { model: Task },
 		order: [["updatedAt", "DESC"]],
 		limit: 10,
-		where: {userId: req.user.id}
+		where: {UserId: req.user.id}
 	});
 
 	res.render("index", { categories, tasks, namePage: 'pages.home' });
@@ -32,7 +32,7 @@ controller.search = async (req, res) => {
 			name: {
 				[Op.substring]: search
 			},
-			userId: req.user.id
+			UserId: req.user.id
 		},
 		include: {model: Task}
 	});
@@ -44,7 +44,7 @@ controller.search = async (req, res) => {
 		},
 		include: {
 			model: Category,
-			where: { userId: req.user.id },
+			where: { UserId: req.user.id },
 		},
 	});
 

@@ -5,7 +5,7 @@ block title
 
 block content
     input(type="hidden" name="url" value=`${category.url}`)#category-url
-    div(class="px-3 md:px-5").bg-white.p-3.rounded-lg.pb-4.shadow-sm
+    div(class="px-4 md:px-5").bg-white.p-3.rounded-lg.pb-4.shadow-sm
         .flex.justify-between.items-start.py-3
             h1(category-url=category.url).text-3xl.font-medium.break-word.w-full#label-category!= category.name
             .relative
@@ -31,37 +31,41 @@ block content
                 div(class=`bg-${category.color}-200`).shadow.w-full.rounded.mt-1
                     div(class=`bg-${category.color}-600` style=`width: ${category.stats().percent}%`)#progress-category.leading-none.pt-1.pb-2.rounded
             else 
-                p.text-gray-400.text-center.mt-4 Sin progreso
+                p.text-gray-400.text-center.mt-4.text-sm No hay tareas registradas.
 
-    h4.mt-6.text-gray-400 Tareas
-        #container-tasks.flex.flex-col.space-y-2.mt-2
-            each task in category.Tasks
-                label.flex.items-center.p-3.bg-white.rounded.shadow-sm.w-full.leading-none.cursor-pointer
-                    input(type='checkbox' class=`border-${category.color}-600 text-${category.color}-600` task-id=`${task.id}` checked= task.state == 1 ? true : false).task.form-checkbox.p-4.rounded-full.border-2
-                    span(id=`label-task-${task.id}`).ml-4.block.break-word.mr-2.w-full !{task.description}
-                    .flex.ml-auto.space-x-2.text-gray-400.block
-                        button(class=`hover:text-${category.color}-300` task-id=`${task.id}` value=task.description).btn-edit-task
-                            svg.w-6(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
-                                path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z')
+    //- if category.Tasks.length > 0
+    h4(class={'hidden': category.Tasks.length == 0})#title-tasks.mt-6.text-gray-400 Tareas
+    #container-tasks.flex.flex-col.space-y-2.mt-2
+        each task in category.Tasks
+            label.flex.items-center.p-3.bg-white.rounded.shadow-sm.w-full.leading-none.cursor-pointer
+                input(type='checkbox' class=`border-${category.color}-600 text-${category.color}-600` task-id=`${task.id}` checked= task.state == 1 ? true : false).task.form-checkbox.p-4.rounded-full.border-2
+                span(id=`label-task-${task.id}`).ml-4.block.break-word.mr-2.w-full !{task.description}
+                .flex.ml-auto.space-x-2.text-gray-400.block
+                    button(class=`hover:text-${category.color}-300` task-id=`${task.id}` value=task.description).btn-edit-task
+                        svg.w-6(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
+                            path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z')
 
-                        button(class=`hover:text-${category.color}-300` task-id=`${task.id}`).btn-delete-task   
-                            svg.w-6(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
-                                path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16')
-            else
-                #text-empty-tasks.bg-white.p-3.rounded.text-center.text-gray-400.border.text-sm No hay tareas registradas. Añade una!
+                    button(class=`hover:text-${category.color}-300` task-id=`${task.id}`).btn-delete-task   
+                        svg.w-6(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
+                            path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16')
+        else
+            #text-empty-tasks.mt-3
+                img(class="block md:hidden" src="/img/empty-tasks.svg", alt="" onclick="document.getElementById('btn-add-category').click()").px-24.py-4.mx-auto
+                img(class="hidden md:block" src="/img/empty-tasks.svg", alt="" onclick="document.getElementById('btn-add-category').click()").px-16.py-4.mx-auto.max-w-xs
+                    
 
 
     .btn-bottom-right
         .relative
-            button(class=`bg-${category.color}-600 hover:bg-${category.color}-500`)#btn-add-category.py-2.px-4.text-white.rounded-full.flex.items-center.font-medium
+            button(class=`bg-${category.color}-600 hover:bg-${category.color}-500`)#btn-add-category.py-2.px-4.text-white.rounded-full.flex.items-center.font-medium.shadow
                 svg.w-7(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor')
                     path(fill-rule='evenodd' d='M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z' clip-rule='evenodd')
                 span Añadir tarea
-            button(class=`bg-${category.color}-600 hover:bg-${category.color}-500`)#btn-close-category.p-2.text-white.rounded-full.flex.items-center.font-medium.shadow-lg.hidden
+            button(class=`bg-${category.color}-600 hover:bg-${category.color}-500`)#btn-close-category.p-2.text-white.rounded-full.flex.items-center.font-medium.shadow.hidden
                 svg.w-6(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor')
                     path(fill-rule='evenodd' d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z' clip-rule='evenodd')
 
-            #container-add-category.absolute.bg-white.rounded-lg.shadow-lg.p-5.border.border-gray-400.right-0.w-80.hidden(style="top: -12rem;")
+            #container-add-category.absolute.bg-white.rounded-lg.shadow-lg.p-5.border.border-gray-400.right-0.w-72.hidden(style="top: -12rem;")
                 form(action=`/tasks/${category.url}` method="POST")#form-add-task
                     h3.text-xl Nueva tarea
                     input#txt-category.form-input.my-4.block.w-full.border.rounded(placeholder="Descripcion" name="description" maxlength="50" required)

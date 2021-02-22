@@ -63,6 +63,7 @@ User.prototype.verifyPassword = function (password) {
 	return bcrypt.compareSync(password, this.password);
 };
 
-User.hasMany(Category, { foreignKey: "userId" });
+User.hasMany(Category, { onDelete: "CASCADE" });
+Category.belongsTo(User);
 
 module.exports = User;

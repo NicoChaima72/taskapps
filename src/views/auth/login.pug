@@ -8,13 +8,13 @@ html(lang="es")
         title Iniciar sesion #{`- ${title}`}
         link(rel="stylesheet" href="/dist/css/bundle.css")
     body.container.px-5.mx-auto.bg-blueGray-100.text-gray-700.font-sans
-        .navbar.py-5.mb-8
+        .navbar.py-5.mb-5
             h3.font-bold.text-3xl.cursor-default #{title}
 
         .max-w-xl.mx-auto
             include ../components/messages.pug
 
-        form(action="/login" method="POST").max-w-xl.mx-auto.bg-white.p-5.shadow-lg.rounded-lg.mt-3
+        form(action="/login" method="POST").max-w-xl.mx-auto.bg-white.p-5.shadow-lg.rounded-lg.mt-3.mb-5
             h1(class="md:text-3xl").font-medium.text-2xl.text-center.my-3.mb-5 Iniciar sesion
             .mb-3
                 label(for="email") Email
