@@ -5,7 +5,7 @@ const editCategory = async (url, nameCategory) => {
         const res = await axios.put(`/categories/${url}`, {name: nameCategory} )
         return res.data;
     } catch (err) {
-        return {ok: false, err}
+        return {ok: false, eror: err}
     }
 }
 

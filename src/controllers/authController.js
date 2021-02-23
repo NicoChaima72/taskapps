@@ -1,4 +1,4 @@
-require('../config/passport')
+require("../config/passport");
 const passport = require("passport");
 const { User } = require("../models");
 const { Op } = require("sequelize");
@@ -17,11 +17,19 @@ controller.showLoginForm = (req, res) => {
 controller.login = (req, res, next) => {
 	AuthRequest.login(req, res);
 
-	passport.authenticate("local.signin", {
-		successRedirect: "/",
-		failureRedirect: "/login",
-		failureFlash: true,
-	})(req, res, next);
+	try {
+		passport.authenticate("local.signin", {
+			successRedirect: "/",
+			failureRedirect: "/login",
+			failureFlash: true,
+		})(req, res, next);
+	} catch (err) {
+		backURL = req.header("Referer") || "/";
+		req.flash("data", req.body);
+		req.flash("errors", helpers.handleErrorSequelize(err));
+
+		return res.redirect(backURL);
+	}
 };
 
 controller.showRegistrationForm = (req, res) => {
@@ -104,10 +112,10 @@ controller.sendResetLinkEmail = async (req, res) => {
 	const user = await User.findOne({ where: { email: email } });
 
 	if (!user) {
-		req.flash("data", {email})
-		req.flash("error", "El email no está registrado")
-		return res.redirect('/password/reset')
-}
+		req.flash("data", { email });
+		req.flash("error", "El email no está registrado");
+		return res.redirect("/password/reset");
+	}
 
 	user.token = uniqid();
 	user.expire = Date.now() + 1000 * 60 * 60 * 2; /** 2hrs */
@@ -124,7 +132,10 @@ controller.sendResetLinkEmail = async (req, res) => {
 			confirmUrl,
 		})
 		.then((info) => {
-			req.flash("success", "Hemos enviado un link a tu correo para recuperar tu contraseña.");
+			req.flash(
+				"success",
+				"Hemos enviado un link a tu correo para recuperar tu contraseña."
+			);
 			req.flash("data", { email });
 			res.redirect("/login");
 		})
@@ -148,12 +159,12 @@ controller.showResetForm = async (req, res) => {
 		return res.redirect("/login");
 	}
 
-	res.render('auth/reset.pug', {token});
+	res.render("auth/reset.pug", { token });
 };
 
 controller.reset = async (req, res) => {
-	AuthRequest.resetPassword(req, res)
-	
+	AuthRequest.resetPassword(req, res);
+
 	const { token } = req.params;
 
 	const user = await User.findOne({
@@ -168,11 +179,16 @@ controller.reset = async (req, res) => {
 		return res.redirect("/login");
 	}
 
-	await user.update({ password: req.body.password, token: null, expire: null, isActive: 1 });
+	await user.update({
+		password: req.body.password,
+		token: null,
+		expire: null,
+		isActive: 1,
+	});
 
 	req.flash("success", "Contraseña cambiada con exito.");
-			req.flash("data", { email: user.email });
-			res.redirect("/login");
+	req.flash("data", { email: user.email });
+	res.redirect("/login");
 };
 
 module.exports = controller;

@@ -6,4 +6,6 @@ require("../models/TaskModel");
 
 db.sync({ alter: true } /* {force: true} */)
 	.then(() => console.log("Conectado"))
-	.catch((err) => console.log(err));
+	.catch((err) => {
+		throw err;
+	});

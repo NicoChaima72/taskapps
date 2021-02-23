@@ -21,6 +21,10 @@ const editTask = async () => {
 		let description = form.get("description");
 
 		const data = await TaskService.editTask(id, description);
+		if (!data.ok) {
+			alert("Ha ocurrido un error, intentalo más tarde");
+			return;
+		}
 		document.getElementById(`label-task-${id}`).innerHTML =
 			data.task.description;
 	});
@@ -28,11 +32,19 @@ const editTask = async () => {
 
 const deleteTask = async (id) => {
 	const data = await TaskService.deleteTask(id);
+	if (!data.ok) {
+		alert("Ha ocurrido un error, intentalo más tarde");
+		return;
+	}
 	return data;
 };
 
 const changeState = async (taskId) => {
 	const data = await TaskService.changeStateTask(taskId);
+	if (!data.ok) {
+		alert("Ha ocurrido un error, intentalo más tarde");
+		return;
+	}
 	return data;
 };
 
@@ -66,22 +78,26 @@ const generateOrDestroyProgressBar = (
             </div>
 		`;
 
-		textEmptyTasks.innerHTML = '';
+		textEmptyTasks.innerHTML = "";
 		containerProgressBar.innerHTML = html;
-		titleTasks.classList.contains('hidden') ? titleTasks.classList.remove('hidden') : null
+		titleTasks.classList.contains("hidden")
+			? titleTasks.classList.remove("hidden")
+			: null;
 	} else {
 		const containerTasks = document.getElementById("container-tasks");
-		
+
 		const html = `
 		<p class="text-gray-400 text-center mt-4 text-sm">No hay tareas registradas.</p>
 		`;
-		
+
 		containerProgressBar.innerHTML = html;
 		textEmptyTasks.innerHTML = `
 			<img class="block md:hidden px-24 py-4 mx-auto" src="/img/empty-tasks.svg" alt="" onclick="document.getElementById('btn-add-category').click()"/>
 			<img class="hidden md:block px-16 py-4 mx-auto max-w-xs" src="/img/empty-tasks.svg" alt="" onclick="document.getElementById('btn-add-category').click()"/>
 		`;
-		!titleTasks.classList.contains('hidden') ? titleTasks.classList.add('hidden') : null
+		!titleTasks.classList.contains("hidden")
+			? titleTasks.classList.add("hidden")
+			: null;
 	}
 };
 
@@ -231,6 +247,10 @@ const listenerAddTask = () => {
 		.addEventListener("submit", async (e) => {
 			e.preventDefault();
 			const data = await addTask();
+			if (!data.ok) {
+				alert("Ha ocurrido un error, intentalo más tarde");
+				return;
+			}
 			if (data.stats.tasks == 1)
 				/** Primera tarea creada */
 				generateOrDestroyProgressBar(data, true);
@@ -284,15 +304,15 @@ const listenerChangeState = () => {
 // -----------------------------------------------
 
 document.addEventListener("DOMContentLoaded", () => {
-	const currentPage = document.getElementById('current-page').value || ''
+	const currentPage = document.getElementById("current-page").value || "";
 
-	if (currentPage === 'categories.show') {
+	if (currentPage === "categories.show") {
 		listenerAddTask();
 		listenerEditTask();
 		listenerDeleteTask();
 	}
 
-	if (currentPage === 'categories.show' || currentPage === 'pages.home') {
+	if (currentPage === "categories.show" || currentPage === "pages.home") {
 		listenerChangeState();
 	}
-})
+});

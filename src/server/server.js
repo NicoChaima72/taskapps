@@ -43,7 +43,6 @@ module.exports = (app) => {
 		res.locals.helpers = helpers;
 		res.locals.errors = req.flash('errors')
 		res.locals.data = req.flash('data')
-		if (res.locals.errors.length > 0) res.locals.errors = res.locals.errors[0]
 		if (res.locals.data.length > 0) res.locals.data = res.locals.data[0]
 
 		next();

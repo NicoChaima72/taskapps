@@ -7,7 +7,7 @@ const addTask = async (url, descriptionTask) => {
 		});
 		return res.data;
 	} catch (err) {
-		return { ok: false, err };
+		return { ok: false, error: err };
 	}
 };
 
@@ -18,7 +18,7 @@ const editTask = async (url, descriptionTask) => {
 		});
 		return res.data;
 	} catch (err) {
-		return { ok: false, err };
+		return { ok: false, error: err };
 	}
 };
 
@@ -27,7 +27,7 @@ const changeStateTask = async (url) => {
 		const res = await axios.put(`/tasks/${url}/state`)
 		return res.data
 	}
-	catch(err) { return {ok: false, err}}
+	catch(err) { return {ok: false, error: err}}
 }
 
 const deleteTask = async (url) => {
@@ -35,7 +35,7 @@ const deleteTask = async (url) => {
 		const res = await axios.delete(`/tasks/${url}`);
 		return res.data;
 	} catch (err) {
-		return { ok: false, err };
+		return { ok: false, error: err };
 	}
 };
 

@@ -13,7 +13,7 @@ module.exports = (app) => {
 
 	router.use('/categories', authMiddleware.isAuthenticated);
 	router.get("/categories", categories.index);
-	router.get("/categories/create", categories.create);
+	// router.get("/categories/create", categories.create);
 	router.post("/categories", categories.store);
 	router.get("/categories/:project_url", categories.show);
 	// router.get("/categories/:project_url/edit", categories.edit);
