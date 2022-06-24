@@ -1,4 +1,3 @@
-const { tasks } = require(".");
 const { Task, Category } = require("../models");
 const { clearString } = require("../helpers/back");
 const TaskRequest = require("../requests/taskRequest");
@@ -6,12 +5,12 @@ const TaskRequest = require("../requests/taskRequest");
 const controller = {};
 
 controller.index = async (req, res, next) => {
-	const { project_url } = req.params;
-	const category = await Category.findOne({ where: { url: project_url } });
+  const { project_url } = req.params;
+  const category = await Category.findOne({ where: { url: project_url } });
 
-	const tasks = await Task.findAll({ where: { projectId: category.id } });
+  const tasks = await Task.findAll({ where: { projectId: category.id } });
 
-	res.render("categories/index", { ok: true, tasks });
+  res.render("categories/index", { ok: true, tasks });
 };
 
 // controller.create = async (req, res, next) => {
@@ -23,100 +22,100 @@ controller.index = async (req, res, next) => {
 // };
 
 controller.store = async (req, res, next) => {
-	TaskRequest.store(req, res);
+  TaskRequest.store(req, res);
 
-	const { project_url } = req.params;
-	const { description } = req.body;
+  const { project_url } = req.params;
+  const { description } = req.body;
 
-	try {
-		let category = await Category.findOne({ where: { url: project_url } });
+  try {
+    let category = await Category.findOne({ where: { url: project_url } });
 
-		if (!category)
-			return res
-				.status(400)
-				.json({ ok: false, message: "Category not exists" });
+    if (!category)
+      return res
+        .status(400)
+        .json({ ok: false, message: "Category not exists" });
 
-		const task = await Task.create(
-			{ description: clearString(description), CategoryId: category.id },
-			{ include: Category }
-		);
+    const task = await Task.create(
+      { description: clearString(description), CategoryId: category.id },
+      { include: Category }
+    );
 
-		category = await Category.findByPk(category.id, {
-			include: { model: Task },
-		});
+    category = await Category.findByPk(category.id, {
+      include: { model: Task },
+    });
 
-		await category.updatedUpdatedAt();
+    await category.updatedUpdatedAt();
 
-		res.json({ ok: true, task, category, stats: category.stats() });
-	} catch (e) {
-		res.json({ ok: false, error: e });
-	}
+    res.json({ ok: true, task, category, stats: category.stats() });
+  } catch (e) {
+    res.json({ ok: false, error: e });
+  }
 };
 
 controller.edit = async (req, res, next) => {
-	const { task_id } = req.params;
-	const task = await Task.findByPk(task_id);
+  const { task_id } = req.params;
+  const task = await Task.findByPk(task_id);
 
-	res.json({ ok: true, message: "Show form update task", task });
+  res.json({ ok: true, message: "Show form update task", task });
 };
 
 controller.update = async (req, res, next) => {
-	TaskRequest.update(req, res);
+  TaskRequest.update(req, res);
 
-	const { task_id } = req.params;
-	const { description } = req.body;
-	try {
-		const task = await Task.findByPk(task_id);
+  const { task_id } = req.params;
+  const { description } = req.body;
+  try {
+    const task = await Task.findByPk(task_id);
 
-		await task.update({ description: clearString(description) });
+    await task.update({ description: clearString(description) });
 
-		res.json({ ok: true, task });
-	} catch (e) {
-		res.json({ ok: false, error: e });
-	}
+    res.json({ ok: true, task });
+  } catch (e) {
+    res.json({ ok: false, error: e });
+  }
 };
 
 controller.updateState = async (req, res, next) => {
-	const { task_id } = req.params;
-	try {
-		const task = await Task.findByPk(task_id);
+  const { task_id } = req.params;
+  try {
+    const task = await Task.findByPk(task_id);
 
-		await task.update({ state: !task.state });
+    await task.update({ state: !task.state });
 
-		const category = await Category.findByPk(task.CategoryId, {
-			include: { model: Task },
-		});
+    const category = await Category.findByPk(task.CategoryId, {
+      include: { model: Task },
+    });
 
-		await category.updatedUpdatedAt();
+    await category.updatedUpdatedAt();
 
-		res.json({ ok: true, task, category, stats: category.stats() });
-	} catch (e) {
-		res.json({ ok: false, error: e });
-	}
+    res.json({ ok: true, task, category, stats: category.stats() });
+  } catch (e) {
+    res.json({ ok: false, error: e });
+  }
 };
 
 controller.destroy = async (req, res, next) => {
-	const { task_id } = req.params;
-	try {
-		const task = await Task.findByPk(task_id);
+  const { task_id } = req.params;
+  try {
+    const task = await Task.findByPk(task_id);
 
-		if (!task)
-			return res.status(400).json({ ok: false, message: "Task not exists" });
+    if (!task)
+      return res.status(400).json({ ok: false, message: "Task not exists" });
 
-		let category = await Category.findByPk(task.CategoryId);
+    let category = await Category.findByPk(task.CategoryId);
 
-		await task.destroy();
+    await task.destroy();
 
-		category = await Category.findByPk(category.id, {
-			include: { model: Task },
-		});
+    category = await Category.findByPk(category.id, {
+      include: { model: Task },
+    });
 
-		await category.updatedUpdatedAt();
+    await category.updatedUpdatedAt();
 
-		res.json({ ok: true, task, category, stats: category.stats() });
-	} catch (e) {
-		res.json({ ok: false, error: e });
-	}
+    res.json({ ok: true, task, category, stats: category.stats() });
+  } catch (e) {
+    res.json({ ok: false, error: e });
+  }
 };
 
 module.exports = controller;
