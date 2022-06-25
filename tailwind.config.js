@@ -14,15 +14,15 @@ module.exports = {
         "2xl": "10rem",
       },
     },
-    // customForms: (theme) => ({
-    //   default: {
-    //     checkbox: {
-    //       "&:focus": {
-    //         borderColor: undefined,
-    //       },
-    //     },
-    //   },
-    // }),
+    customForms: (theme) => ({
+      default: {
+        checkbox: {
+          "&:focus": {
+            borderColor: undefined,
+          },
+        },
+      },
+    }),
     extend: {},
     container: {
       center: true,
@@ -64,5 +64,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  // plugins: [require("@tailwindcss/custom-forms")],
+  plugins: [require("@tailwindcss/custom-forms")],
 };
