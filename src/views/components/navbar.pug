@@ -47,26 +47,26 @@ div(class="block md:hidden").navbar-small.flex.items-center
     .fixed.inset-x-0.bottom-0.bg-white.w-full.p-3.z-50.shadow.border.flex.justify-around.items-center
         a(href="/").flex.items-center
             if (namePage == 'pages.home')
-                svg.w-7(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor')
+                svg.w-8(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor')
                     path(d='M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z')
             else
-                svg.w-7(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
+                svg.w-8(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
                     path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6')
 
         if user.Categories.length > 0
             a(href="/categories").flex.items-center
                 if (namePage == 'categories.index' || namePage == 'categories.show')
-                    svg.w-7(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor')
+                    svg.w-8(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor')
                         path(d='M9 2a1 1 0 000 2h2a1 1 0 100-2H9z')
                         path(fill-rule='evenodd' d='M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z' clip-rule='evenodd')
                 else
-                    svg.w-7(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
+                    svg.w-8(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
                         path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01')
 
 
         .relative
             button#user-button-bottom.flex.items-center
-                svg.w-7(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
+                svg.w-8(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
                     path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z')
             #user-container-bottom.absolute.bottom-0.w-60.p-3.bg-white.border.rounded-lg.hidden.shadow.z-10(style="bottom: 3rem; right: -2.8rem")
                     .flex.items-center.space-x-2.py-2

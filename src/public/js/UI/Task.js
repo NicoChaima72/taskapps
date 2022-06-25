@@ -1,67 +1,67 @@
 import TaskService from "../Services/Task";
 
 const addTask = async () => {
-	const categoryUrl = document.getElementById("category-url").value;
-	const description = document.getElementById("txt-category").value;
-	const data = await TaskService.addTask(categoryUrl, description);
+  const categoryUrl = document.getElementById("category-url").value;
+  const description = document.getElementById("txt-category").value;
+  const data = await TaskService.addTask(categoryUrl, description);
 
-	return data;
+  return data;
 };
 
 const editTask = async () => {
-	const formEditTask = document.getElementById("form-edit-task");
-	formEditTask.addEventListener("submit", async (e) => {
-		e.preventDefault();
+  const formEditTask = document.getElementById("form-edit-task");
+  formEditTask.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-		const form = new FormData(formEditTask);
+    const form = new FormData(formEditTask);
 
-		const txtTask = document.getElementById("txt-edit-task");
-		const id = txtTask.getAttribute("task-id");
+    const txtTask = document.getElementById("txt-edit-task");
+    const id = txtTask.getAttribute("task-id");
 
-		let description = form.get("description");
+    let description = form.get("description");
 
-		const data = await TaskService.editTask(id, description);
-		if (!data.ok) {
-			alert("Ha ocurrido un error, intentalo más tarde");
-			return;
-		}
-		document.getElementById(`label-task-${id}`).innerHTML =
-			data.task.description;
-	});
+    const data = await TaskService.editTask(id, description);
+    if (!data.ok) {
+      alert("Ha ocurrido un error, intentalo más tarde");
+      return;
+    }
+    document.getElementById(`label-task-${id}`).innerHTML =
+      data.task.description;
+  });
 };
 
 const deleteTask = async (id) => {
-	const data = await TaskService.deleteTask(id);
-	if (!data.ok) {
-		alert("Ha ocurrido un error, intentalo más tarde");
-		return;
-	}
-	return data;
+  const data = await TaskService.deleteTask(id);
+  if (!data.ok) {
+    alert("Ha ocurrido un error, intentalo más tarde");
+    return;
+  }
+  return data;
 };
 
 const changeState = async (taskId) => {
-	const data = await TaskService.changeStateTask(taskId);
-	if (!data.ok) {
-		alert("Ha ocurrido un error, intentalo más tarde");
-		return;
-	}
-	return data;
+  const data = await TaskService.changeStateTask(taskId);
+  if (!data.ok) {
+    alert("Ha ocurrido un error, intentalo más tarde");
+    return;
+  }
+  return data;
 };
 
 const generateOrDestroyProgressBar = (
-	data,
-	generateTrueDestroyFalse = true
+  data,
+  generateTrueDestroyFalse = true
 ) => {
-	const stats = data.stats;
-	const category = data.category;
-	const containerProgressBar = document.getElementById(
-		"container-progress-bar"
-	);
-	const textEmptyTasks = document.getElementById("text-empty-tasks");
-	const titleTasks = document.getElementById("title-tasks");
+  const stats = data.stats;
+  const category = data.category;
+  const containerProgressBar = document.getElementById(
+    "container-progress-bar"
+  );
+  const textEmptyTasks = document.getElementById("text-empty-tasks");
+  const titleTasks = document.getElementById("title-tasks");
 
-	if (generateTrueDestroyFalse) {
-		const html = `
+  if (generateTrueDestroyFalse) {
+    const html = `
 			<div>
 				<p class="text-xs m-0">
 					Progreso:
@@ -73,77 +73,77 @@ const generateOrDestroyProgressBar = (
 					<span class="ml-2" id="tasks-percent">(${stats.percent}%)</span>
 				</p>
                 <div class="bg-${category.color}-200 shadow w-full rounded mt-1">
-                    <div class="bg-${category.color}-600 leading-none pt-1 pb-2 rounded" style="width: ${stats.percent}%" id="progress-category"></div>
+                    <div class="bg-${category.color}-600 leading-none pt-1 pb-2 rounded" style="width: ${stats.percent}%; transition: width 2s" id="progress-category"></div>
                 </div>
             </div>
 		`;
 
-		textEmptyTasks.innerHTML = "";
-		containerProgressBar.innerHTML = html;
-		titleTasks.classList.contains("hidden")
-			? titleTasks.classList.remove("hidden")
-			: null;
-	} else {
-		const containerTasks = document.getElementById("container-tasks");
+    textEmptyTasks.innerHTML = "";
+    containerProgressBar.innerHTML = html;
+    titleTasks.classList.contains("hidden")
+      ? titleTasks.classList.remove("hidden")
+      : null;
+  } else {
+    const containerTasks = document.getElementById("container-tasks");
 
-		const html = `
+    const html = `
 		<p class="text-gray-400 text-center mt-4 text-sm">No hay tareas registradas.</p>
 		`;
 
-		containerProgressBar.innerHTML = html;
-		textEmptyTasks.innerHTML = `
+    containerProgressBar.innerHTML = html;
+    textEmptyTasks.innerHTML = `
 			<img class="block md:hidden px-24 py-4 mx-auto" src="/img/empty-tasks.svg" alt="" onclick="document.getElementById('btn-add-category').click()"/>
 			<img class="hidden md:block px-16 py-4 mx-auto max-w-xs" src="/img/empty-tasks.svg" alt="" onclick="document.getElementById('btn-add-category').click()"/>
 		`;
-		!titleTasks.classList.contains("hidden")
-			? titleTasks.classList.add("hidden")
-			: null;
-	}
+    !titleTasks.classList.contains("hidden")
+      ? titleTasks.classList.add("hidden")
+      : null;
+  }
 };
 
 const changeProgressBar = async (stats) => {
-	if (document.getElementById("progress-category")) {
-		/** DENTRO DE PAGINA SHOW */
-		const progressBar = document.getElementById("progress-category");
-		const tasksPercent = document.getElementById("tasks-percent");
-		const tasksCompleted = document.getElementById("tasks-completed");
-		const tasksTotal = document.getElementById("tasks-total");
+  if (document.getElementById("progress-category")) {
+    /** DENTRO DE PAGINA SHOW */
+    const progressBar = document.getElementById("progress-category");
+    const tasksPercent = document.getElementById("tasks-percent");
+    const tasksCompleted = document.getElementById("tasks-completed");
+    const tasksTotal = document.getElementById("tasks-total");
 
-		tasksCompleted.textContent = stats.completed;
-		tasksTotal.textContent = stats.tasks;
-		tasksPercent.textContent = `(${stats.percent}%)`;
-		progressBar.style.width = `${stats.percent}%`;
-	} else {
-		/** DENTRO DE PAGINA PRINCIPAL */
-		if (document.getElementById(`progress-category-${stats.id}`)) {
-			/** SI LA CATEGORIA SE ENCUENTRA ENTRE LAS CATEGORIAS RECIENTES LA LLEVAMOS AL PRINCIPIO */
-			const progressBar = document.getElementById(
-				`progress-category-${stats.id}`
-			);
-			const tasksTotal = document.getElementById(`tasks-total-${stats.id}`);
-			const tasksPercent = document.getElementById(`tasks-percent-${stats.id}`);
-			const categoryDate = document.getElementById(`category-date-${stats.id}`);
+    tasksCompleted.textContent = stats.completed;
+    tasksTotal.textContent = stats.tasks;
+    tasksPercent.textContent = `(${stats.percent}%)`;
+    progressBar.style.width = `${stats.percent}%`;
+  } else {
+    /** DENTRO DE PAGINA PRINCIPAL */
+    if (document.getElementById(`progress-category-${stats.id}`)) {
+      /** SI LA CATEGORIA SE ENCUENTRA ENTRE LAS CATEGORIAS RECIENTES LA LLEVAMOS AL PRINCIPIO */
+      const progressBar = document.getElementById(
+        `progress-category-${stats.id}`
+      );
+      const tasksTotal = document.getElementById(`tasks-total-${stats.id}`);
+      const tasksPercent = document.getElementById(`tasks-percent-${stats.id}`);
+      const categoryDate = document.getElementById(`category-date-${stats.id}`);
 
-			progressBar.style.width = `${stats.percent}%`;
-			tasksPercent.textContent = `${stats.percent}%`;
-			categoryDate.textContent = "hace unos segundos";
+      progressBar.style.width = `${stats.percent}%`;
+      tasksPercent.textContent = `${stats.percent}%`;
+      categoryDate.textContent = "hace unos segundos";
 
-			const parent = progressBar.parentNode.parentNode;
+      const parent = progressBar.parentNode.parentNode;
 
-			parent.remove();
+      parent.remove();
 
-			const containerCategories = document.getElementById(
-				"container-categories"
-			);
-			containerCategories.prepend(parent);
-		} else {
-			/** SI NO SE ENCUENTRA LA CREAMOS Y LA ENVIAMOS AL PRINCIPIO */
-			const category = stats.category;
-			const containerCategories = document.getElementById(
-				"container-categories"
-			);
+      const containerCategories = document.getElementById(
+        "container-categories"
+      );
+      containerCategories.prepend(parent);
+    } else {
+      /** SI NO SE ENCUENTRA LA CREAMOS Y LA ENVIAMOS AL PRINCIPIO */
+      const category = stats.category;
+      const containerCategories = document.getElementById(
+        "container-categories"
+      );
 
-			const html = `
+      const html = `
 				<a class="w-9/12 md:w-6/12 lg:w-4/12 flex-none bg-white rounded shadow-sm p-4 relative pb-6 mb-2"
                     href="/categories/${category.url}">
                     <div class="flex justify-between items-start">
@@ -160,38 +160,38 @@ const changeProgressBar = async (stats) => {
                 </a>
 			`;
 
-			containerCategories.innerHTML = html + containerCategories.innerHTML;
-		}
-	}
+      containerCategories.innerHTML = html + containerCategories.innerHTML;
+    }
+  }
 };
 
 const toggleShowFormAdd = (ShowFormTrueDestroyFormFalse = true) => {
-	const btnAdd = document.getElementById("btn-add-category");
-	const containerAdd = document.getElementById("container-add-category");
-	const btnClose = document.getElementById("btn-close-category");
-	const txtTask = document.getElementById("txt-category");
+  const btnAdd = document.getElementById("btn-add-category");
+  const containerAdd = document.getElementById("container-add-category");
+  const btnClose = document.getElementById("btn-close-category");
+  const txtTask = document.getElementById("txt-category");
 
-	txtTask.value = "";
+  txtTask.value = "";
 
-	if (ShowFormTrueDestroyFormFalse) {
-		btnAdd.classList.remove("hidden");
-		btnClose.classList.add("hidden");
-		containerAdd.classList.add("hidden");
-	} else {
-		btnAdd.classList.add("hidden");
-		btnClose.classList.remove("hidden");
-		containerAdd.classList.remove("hidden");
-	}
+  if (ShowFormTrueDestroyFormFalse) {
+    btnAdd.classList.remove("hidden");
+    btnClose.classList.add("hidden");
+    containerAdd.classList.add("hidden");
+  } else {
+    btnAdd.classList.add("hidden");
+    btnClose.classList.remove("hidden");
+    containerAdd.classList.remove("hidden");
+  }
 };
 
 const drawTask = (data) => {
-	const category = data.category;
-	const stats = data.stats;
-	const task = data.task;
+  const category = data.category;
+  const stats = data.stats;
+  const task = data.task;
 
-	const containerTasks = document.getElementById("container-tasks");
+  const containerTasks = document.getElementById("container-tasks");
 
-	const html = `
+  const html = `
 		<label class="flex items-center p-3 bg-white rounded shadow-sm w-full leading-none cursor-pointer">
 			<input class="task border-${category.color}-600 text-${category.color}-600 form-checkbox p-4 rounded-full border-2" type="checkbox" task-id="${task.id}" />
 			<span class="ml-4 block break-word mr-2 w-full" id="label-task-${task.id}">${task.description}</span>
@@ -210,109 +210,109 @@ const drawTask = (data) => {
 		</label>
 	`;
 
-	containerTasks.innerHTML = html + containerTasks.innerHTML;
+  containerTasks.innerHTML = html + containerTasks.innerHTML;
 
-	listenerEditTask();
-	listenerDeleteTask();
-	listenerChangeState();
+  listenerEditTask();
+  listenerDeleteTask();
+  listenerChangeState();
 };
 
 const generateFormEditTask = (id, value) => {
-	const label = document.getElementById(`label-task-${id}`);
+  const label = document.getElementById(`label-task-${id}`);
 
-	const html = `
+  const html = `
 		<form id="form-edit-task">
 			<input required type="text" name="description" maxlength="50" id="txt-edit-task" task-id="${id}" value='${value}' class="border border-gray-400 p-1 w-full" onfocus="const value = this.value; this.value = null; this.value=value">
 		</form>
 	`;
 
-	label.innerHTML = html;
+  label.innerHTML = html;
 
-	const txtEditTask = document.getElementById("txt-edit-task");
-	txtEditTask.focus();
+  const txtEditTask = document.getElementById("txt-edit-task");
+  txtEditTask.focus();
 
-	txtEditTask.addEventListener("blur", () => (label.innerHTML = value));
+  txtEditTask.addEventListener("blur", () => (label.innerHTML = value));
 
-	editTask();
+  editTask();
 };
 
 const removeTask = (btnTask) => {
-	const labelTask = btnTask.parentNode.parentNode;
-	labelTask.remove();
+  const labelTask = btnTask.parentNode.parentNode;
+  labelTask.remove();
 };
 
 const listenerAddTask = () => {
-	document
-		.getElementById("form-add-task")
-		.addEventListener("submit", async (e) => {
-			e.preventDefault();
-			const data = await addTask();
-			if (!data.ok) {
-				alert("Ha ocurrido un error, intentalo más tarde");
-				return;
-			}
-			if (data.stats.tasks == 1)
-				/** Primera tarea creada */
-				generateOrDestroyProgressBar(data, true);
-			/** ya hay mas tareas */ else changeProgressBar(data.stats);
+  document
+    .getElementById("form-add-task")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = await addTask();
+      if (!data.ok) {
+        alert("Ha ocurrido un error, intentalo más tarde");
+        return;
+      }
+      if (data.stats.tasks == 1)
+        /** Primera tarea creada */
+        generateOrDestroyProgressBar(data, true);
+      /** ya hay mas tareas */ else changeProgressBar(data.stats);
 
-			toggleShowFormAdd(true);
-			drawTask(data);
-		});
+      toggleShowFormAdd(true);
+      drawTask(data);
+    });
 };
 
 const listenerEditTask = () => {
-	document.querySelectorAll(".btn-edit-task").forEach((btn) => {
-		btn.addEventListener("click", async () => {
-			const text = btn.parentNode.parentNode.children[1].textContent;
-			// /** span con el nombre de la tarea */
-			const taskId = btn.getAttribute("task-id");
+  document.querySelectorAll(".btn-edit-task").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const text = btn.parentNode.parentNode.children[1].textContent;
+      // /** span con el nombre de la tarea */
+      const taskId = btn.getAttribute("task-id");
 
-			await generateFormEditTask(taskId, text);
-		});
-	});
+      await generateFormEditTask(taskId, text);
+    });
+  });
 };
 
 const listenerDeleteTask = () => {
-	document.querySelectorAll(".btn-delete-task").forEach((btn) => {
-		btn.addEventListener("click", async () => {
-			const text = btn.parentNode.parentNode.children[1].textContent;
-			const taskId = btn.getAttribute("task-id");
-			/** span con el nombre de la tarea */
+  document.querySelectorAll(".btn-delete-task").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const text = btn.parentNode.parentNode.children[1].textContent;
+      const taskId = btn.getAttribute("task-id");
+      /** span con el nombre de la tarea */
 
-			if (confirm(`Se eliminará la tarea "${text}"`)) {
-				const data = await deleteTask(taskId);
+      if (confirm(`Se eliminará la tarea "${text}"`)) {
+        const data = await deleteTask(taskId);
 
-				if (data.stats.tasks) changeProgressBar(data.stats);
-				else generateOrDestroyProgressBar(data, false);
+        if (data.stats.tasks) changeProgressBar(data.stats);
+        else generateOrDestroyProgressBar(data, false);
 
-				removeTask(btn);
-			}
-		});
-	});
+        removeTask(btn);
+      }
+    });
+  });
 };
 
 const listenerChangeState = () => {
-	document.querySelectorAll(".task").forEach((task) => {
-		task.addEventListener("change", async (e) => {
-			const stats = await changeState(task.getAttribute("task-id"));
-			changeProgressBar(stats.stats);
-		});
-	});
+  document.querySelectorAll(".task").forEach((task) => {
+    task.addEventListener("change", async (e) => {
+      const stats = await changeState(task.getAttribute("task-id"));
+      changeProgressBar(stats.stats);
+    });
+  });
 };
 
 // -----------------------------------------------
 
 document.addEventListener("DOMContentLoaded", () => {
-	const currentPage = document.getElementById("current-page").value || "";
+  const currentPage = document.getElementById("current-page").value || "";
 
-	if (currentPage === "categories.show") {
-		listenerAddTask();
-		listenerEditTask();
-		listenerDeleteTask();
-	}
+  if (currentPage === "categories.show") {
+    listenerAddTask();
+    listenerEditTask();
+    listenerDeleteTask();
+  }
 
-	if (currentPage === "categories.show" || currentPage === "pages.home") {
-		listenerChangeState();
-	}
+  if (currentPage === "categories.show" || currentPage === "pages.home") {
+    listenerChangeState();
+  }
 });

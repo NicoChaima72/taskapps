@@ -28,7 +28,7 @@ block content
 
                         if (category.Tasks.length > 0)
                             div(class=`bg-${category.color}-200`).shadow.w-full.rounded
-                                div(id=`progress-category-${category.id}` class=`bg-${category.color}-500` style=`width: ${category.stats().percent}%`).leading-none.py-1.rounded.my-1
+                                div(id=`progress-category-${category.id}` class=`bg-${category.color}-500` style=`width: ${category.stats().percent}%; transition: width 2s;`).leading-none.py-1.rounded.my-1
                         small(id=`category-date-${category.id}`).block.text-xs.text-gray-400.absolute.right-4.bottom-2 #{helpers.formatDate(category.updatedAt)}
 
 

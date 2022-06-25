@@ -2,14 +2,14 @@
     input(type="hidden" name="color" value=helpers.getRandomColor() id="random-color")
     .relative
         button#btn-add-category.py-2.px-4.text-white.rounded-full.flex.items-center.font-medium.shadow
-            svg.w-7(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor')
+            svg.w-8(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor')
                 path(fill-rule='evenodd' d='M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z' clip-rule='evenodd')
             span Agregar categoria
         button#btn-close-category.p-2.text-white.rounded-full.flex.items-center.font-medium.shadow.hidden
             svg.w-6(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor')
                 path(fill-rule='evenodd' d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z' clip-rule='evenodd')
 
-        #container-add-category.absolute.bg-white.rounded-lg.shadow-lg.p-5.border.border-gray-400.right-0.w-72.hidden(style="top: -12rem;")
+        #container-add-category.absolute.bg-white.rounded-lg.shadow-lg.p-5.border.border-gray-400.right-0.hidden(style="top: -12rem; width: 20rem")
             form(action="/categories" method="POST")
                 h3.text-xl Agregar categoria
                 input#txt-category.form-input.my-4.block.w-full.border.rounded(placeholder="Nombre" name="name" maxlength="32" required)
