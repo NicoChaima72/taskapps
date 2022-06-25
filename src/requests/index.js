@@ -1,4 +1,5 @@
 module.exports = {
-	AuthRequest: require("./authRequest"),
-	// ProjectRequest: require("./"),
+  AuthRequest: require("./authRequest"),
+  CategoryRequest: require("./categoryRequest"),
+  TaskRequest: require("./taskRequest"),
 };

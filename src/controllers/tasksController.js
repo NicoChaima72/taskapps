@@ -1,6 +1,5 @@
 const { Task, Category } = require("../models");
 const { clearString } = require("../helpers/back");
-const TaskRequest = require("../requests/taskRequest");
 
 const controller = {};
 
@@ -22,8 +21,6 @@ controller.index = async (req, res, next) => {
 // };
 
 controller.store = async (req, res, next) => {
-  TaskRequest.store(req, res);
-
   const { project_url } = req.params;
   const { description } = req.body;
 
@@ -60,8 +57,6 @@ controller.edit = async (req, res, next) => {
 };
 
 controller.update = async (req, res, next) => {
-  TaskRequest.update(req, res);
-
   const { task_id } = req.params;
   const { description } = req.body;
   try {

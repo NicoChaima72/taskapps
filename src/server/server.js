@@ -2,9 +2,10 @@ const express = require("express");
 const path = require("path");
 const methodOverride = require("method-override");
 const passport = require("../config/passport");
-// const session = require('express-session')
+// const session = require("express-session");
 const session = require("cookie-session");
 const flash = require("connect-flash");
+const os = require("os");
 
 const routes = require("../routes/routes.js");
 
@@ -45,6 +46,7 @@ module.exports = (app) => {
     res.locals.errors = req.flash("errors");
     res.locals.data = req.flash("data");
     if (res.locals.data.length > 0) res.locals.data = res.locals.data[0];
+    if (res.locals.errors.length > 0) res.locals.errors = res.locals.errors[0];
 
     next();
   });

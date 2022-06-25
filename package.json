@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env KEY_ENV=value node ./src/index.js",
+    "start": "node ./src/index.js",
+    "example": "cross-env KEY_ENV=value node ./src/index.js",
     "dev": "concurrently \"npm run webpack:watch\" \"nodemon ./src/index.js\"",
     "webpack:watch": "npx webpack --mode=development --watch",
     "webpack:dev": "npx webpack --mode=development",
@@ -17,7 +18,6 @@
     "@babel/core": "^7.12.10",
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.12.11",
-    "@tailwindcss/custom-forms": "^0.2.1",
     "autoprefixer": "^10.1.0",
     "axios": "^0.21.1",
     "babel-loader": "^8.2.2",
