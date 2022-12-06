@@ -5,6 +5,4 @@ const server = require("./server/server");
 
 const app = server(express());
 
-app.listen(4000, () =>
-  console.log(`Server on port ${app.get("port")}`)
-);
+app.listen(process.env.PORT, () => console.log(`Server on port ${app.get("port")}`));
