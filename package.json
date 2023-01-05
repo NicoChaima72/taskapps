@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./src/index.js",
+    "start": "node ./src/index.js -openssl-legacy-provider",
     "example": "cross-env KEY_ENV=value node ./src/index.js",
     "dev": "concurrently \"npm run webpack:watch\" \"nodemon ./src/index.js\"",
     "webpack:watch": "npx webpack --mode=development --watch",
